@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon Panier — SportKit SN</title>
+<link rel="icon" type="image/png" href="assets/images/logo.png">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+.page-hero{background:linear-gradient(135deg,#0D6EFD,#0952c6);padding:36px 20px;text-align:center}
+.page-hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(32px,5vw,52px);color:#fff;letter-spacing:3px;margin-bottom:4px}
+.page-hero p{font-size:14px;color:rgba(255,255,255,0.8)}
+.panier-wrap{max-width:1100px;margin:0 auto;padding:28px 20px 60px}
+.panier-layout{display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:start}
+.panier-empty{text-align:center;padding:80px 20px;background:var(--white);border-radius:var(--radius-lg);border:1.5px solid var(--border)}
+.panier-empty i{font-size:64px;display:block;margin-bottom:16px;opacity:.2;color:var(--blue)}
+.panier-empty h2{font-size:22px;font-weight:900;margin-bottom:8px}
+.panier-empty p{font-size:14px;color:var(--text2);margin-bottom:24px}
+.btn-continue{display:inline-flex;align-items:center;gap:8px;background:var(--blue);color:#fff;border:none;border-radius:10px;padding:13px 28px;font-size:14px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;transition:all .15s;text-decoration:none}
+.btn-continue:hover{background:var(--blue-dark);transform:translateY(-2px)}
+.panier-table{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow)}
+.panier-table-head{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 40px;padding:12px 20px;background:var(--bg);border-bottom:1.5px solid var(--border);font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--text2)}
+.panier-item{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 40px;align-items:center;padding:16px 20px;border-bottom:1px solid var(--border);transition:background .15s}
+.panier-item:last-child{border-bottom:none}
+.panier-item:hover{background:var(--bg)}
+.item-info{display:flex;align-items:center;gap:14px}
+.item-img{width:72px;height:72px;border-radius:8px;object-fit:cover;background:var(--bg);border:1px solid var(--border);flex-shrink:0}
+.item-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px;line-height:1.3}
+.item-cat{font-size:11px;color:var(--text2)}
+.item-price{font-size:15px;font-weight:900;color:var(--blue)}
+.item-qty-ctrl{display:flex;align-items:center;gap:0;border:1.5px solid var(--border);border-radius:8px;overflow:hidden;width:fit-content}
+.item-qty-ctrl button{width:32px;height:32px;background:var(--bg);border:none;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s}
+.item-qty-ctrl button:hover{background:var(--blue-light);color:var(--blue)}
+.item-qty-ctrl span{width:40px;text-align:center;font-size:14px;font-weight:900}
+.item-total{font-size:15px;font-weight:900;color:var(--text)}
+.item-del{width:32px;height:32px;border-radius:6px;background:transparent;border:1px solid var(--border);color:var(--text2);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;font-size:14px}
+.item-del:hover{background:#fff0f0;border-color:#FF3B30;color:#FF3B30}
+.panier-actions{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;background:var(--bg);border-top:1.5px solid var(--border)}
+.btn-clear{display:flex;align-items:center;gap:6px;background:none;border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:12px;font-weight:700;color:var(--text2);cursor:pointer;transition:all .15s;font-family:'Nunito',sans-serif}
+.btn-clear:hover{border-color:#FF3B30;color:#FF3B30}
+.btn-continue-shop{display:flex;align-items:center;gap:6px;background:var(--blue-light);border:1.5px solid var(--blue);border-radius:8px;padding:8px 16px;font-size:12px;font-weight:800;color:var(--blue);cursor:pointer;transition:all .15s;font-family:'Nunito',sans-serif;text-decoration:none}
+.btn-continue-shop:hover{background:var(--blue);color:#fff}
+.recap{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow);position:sticky;top:80px}
+.recap-title{font-size:16px;font-weight:900;margin-bottom:16px;padding-bottom:12px;border-bottom:1.5px solid var(--border)}
+.recap-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:14px}
+.recap-row-label{color:var(--text2);font-weight:600}
+.recap-row-val{font-weight:800;color:var(--text)}
+.recap-divider{height:1px;background:var(--border);margin:14px 0}
+.recap-total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.recap-total-label{font-size:15px;font-weight:900}
+.recap-total-val{font-size:24px;font-weight:900;color:var(--blue)}
+.recap-total-fcfa{font-size:12px;color:var(--text2)}
+.promo-row{display:flex;gap:8px;margin-bottom:16px}
+.promo-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;font-family:'Nunito',sans-serif;font-size:13px;outline:none;color:var(--text)}
+.promo-input:focus{border-color:var(--blue)}
+.btn-promo-apply{background:var(--blue);color:#fff;border:none;border-radius:8px;padding:10px 14px;font-size:13px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;transition:background .15s}
+.btn-promo-apply:hover{background:var(--blue-dark)}
+.btn-order{width:100%;background:var(--blue);color:#fff;border:none;border-radius:10px;padding:15px;font-size:15px;font-weight:900;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Nunito',sans-serif;cursor:pointer;transition:all .15s;margin-bottom:10px}
+.btn-order:hover{background:var(--blue-dark)}
+.btn-order-wa{width:100%;background:#25D366;color:#fff;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Nunito',sans-serif;cursor:pointer;transition:background .15s;text-decoration:none}
+.btn-order-wa:hover{background:#1eb856}
+.secure-note{text-align:center;font-size:11px;color:var(--text2);margin-top:12px;display:flex;align-items:center;justify-content:center;gap:4px}
+@media(max-width:900px){
+  .panier-layout{grid-template-columns:1fr}
+  .recap{position:static}
+  .panier-table-head{display:none}
+  .panier-item{grid-template-columns:1fr;gap:10px}
+  .item-info{grid-column:1}
+}
+@media(max-width:600px){
+  .panier-item{padding:12px 14px}
+}
+</style>
+</head>
+<body>
+<div class="splash" id="splash"><img src="assets/images/logo.png" alt="SportKit SN" class="splash-logo"><div class="splash-bar"><div class="splash-fill"></div></div></div>
+
+<div class="ticker-bar"><div class="ticker-track"><span class="ticker-item"><i class="bi bi-truck-fill"></i> Livraison rapide partout au Sénégal</span><span class="ticker-item"><i class="bi bi-shield-check-fill"></i> Paiement 100% sécurisé</span><span class="ticker-item"><i class="bi bi-truck-fill"></i> Livraison rapide partout au Sénégal</span><span class="ticker-item"><i class="bi bi-shield-check-fill"></i> Paiement 100% sécurisé</span></div></div>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html"><img src="assets/images/logonav1.png" alt="SportKit SN" class="navbar-logo"></a>
+    <div class="navbar-search"><input type="text" placeholder="Rechercher un produit..."><button class="search-btn"><i class="bi bi-search"></i></button></div>
+    <div class="navbar-right">
+      <a href="produits.html" class="nav-link"><i class="bi bi-grid-3x3-gap-fill"></i> Produits</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+      <button class="nav-cart-btn" id="cartBtn"><i class="bi bi-cart3"></i><span class="cart-badge" id="cartBadge">0</span></button>
+      <button class="hamburger" id="menuBtn"><i class="bi bi-list"></i></button>
+    </div>
+  </div>
+</nav>
+<div class="mobile-drawer" id="mobileDrawer">
+  <div class="drawer-head"><img src="assets/images/logo.png" class="drawer-logo"><button class="drawer-close" id="drawerClose"><i class="bi bi-x-lg"></i></button></div>
+  <div class="drawer-body">
+    <a href="index.html" class="drawer-link"><i class="bi bi-house-fill"></i> Accueil</a>
+    <a href="produits.html" class="drawer-link"><i class="bi bi-grid-3x3-gap-fill"></i> Catalogue</a>
+    <a href="panier.html" class="drawer-link active"><i class="bi bi-cart3"></i> Mon panier</a>
+    <a href="contact.html" class="drawer-link"><i class="bi bi-chat-dots-fill"></i> Contact</a>
+    <div class="drawer-sep"></div>
+    <a href="https://wa.me/221XXXXXXXX" class="drawer-wa"><i class="bi bi-whatsapp"></i> Commander via WhatsApp</a>
+  </div>
+</div>
+
+<div class="page-hero">
+  <h1>MON PANIER</h1>
+  <p id="heroSubtitle">Chargement...</p>
+</div>
+
+<div class="panier-wrap">
+  <div id="panierContent"></div>
+</div>
+
+<a href="https://wa.me/221XXXXXXXX" target="_blank" class="wa-float"><i class="bi bi-whatsapp"></i></a>
+<div class="toast-stack" id="toastStack"></div>
+
+<script>
+window.addEventListener('load', () => {
+  if (sessionStorage.getItem('splashShown')) {
+    document.getElementById('splash').classList.add('gone');
+  } else {
+    sessionStorage.setItem('splashShown', '1');
+    setTimeout(() => document.getElementById('splash').classList.add('gone'), 1400);
+  }
+});
+
+document.getElementById('menuBtn').onclick = () => document.getElementById('mobileDrawer').classList.add('open');
+document.getElementById('drawerClose').onclick = () => document.getElementById('mobileDrawer').classList.remove('open');
+
+const getCart = () => JSON.parse(localStorage.getItem('sportkit_cart') || '[]');
+const saveCart = c => { localStorage.setItem('sportkit_cart', JSON.stringify(c)); updateBadge(); renderPanier(); };
+const updateBadge = () => { document.getElementById('cartBadge').textContent = getCart().reduce((s,i) => s+i.qty, 0); };
+
+function showToast(msg, color='#22c55e') {
+  const s=document.getElementById('toastStack'), t=document.createElement('div');
+  t.className='tst'; t.innerHTML=`<div class="tst-dot" style="background:${color}"></div><span>${msg}</span>`;
+  s.appendChild(t); requestAnimationFrame(()=>t.classList.add('show'));
+  setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),400);},3000);
+}
+
+function changeQty(id, d) {
+  const c = getCart(), i = c.findIndex(x => x.id===id);
+  if(i>-1){c[i].qty+=d; if(c[i].qty<=0)c.splice(i,1);}
+  saveCart(c);
+}
+function removeItem(id) { saveCart(getCart().filter(x=>x.id!==id)); }
+function clearCart() { if(confirm('Vider tout le panier ?')) { localStorage.removeItem('sportkit_cart'); updateBadge(); renderPanier(); } }
+
+function buildWAMessage(cart) {
+  const lines = cart.map(it => `• ${it.nom} x${it.qty} — ${(it.prix*it.qty).toLocaleString()} FCFA`).join('\n');
+  const total = cart.reduce((s,i)=>s+i.prix*i.qty,0);
+  return encodeURIComponent(`Bonjour SportKit SN ! 🛒\n\nJe voudrais commander :\n${lines}\n\nTotal : ${total.toLocaleString()} FCFA\n\nMerci !`);
+}
+
+function renderPanier() {
+  const cart = getCart();
+  const content = document.getElementById('panierContent');
+  const total = cart.reduce((s,i) => s+i.prix*i.qty, 0);
+  const count = cart.reduce((s,i) => s+i.qty, 0);
+  document.getElementById('heroSubtitle').textContent = count > 0 ? `${count} article${count>1?'s':''} dans ton panier` : 'Ton panier est vide';
+
+  if (!cart.length) {
+    content.innerHTML = `
+      <div class="panier-empty">
+        <i class="bi bi-cart3"></i>
+        <h2>Ton panier est vide</h2>
+        <p>Tu n'as pas encore ajouté de produits à ton panier.</p>
+        <a href="produits.html" class="btn-continue"><i class="bi bi-grid-3x3-gap-fill"></i> Voir nos produits</a>
+      </div>`;
+    return;
+  }
+
+  content.innerHTML = `
+    <div class="panier-layout">
+      <div>
+        <div class="panier-table">
+          <div class="panier-table-head">
+            <span>Produit</span><span>Prix unitaire</span><span>Quantité</span><span>Total</span><span></span>
+          </div>
+          <div id="itemsList">
+            ${cart.map(it => `
+              <div class="panier-item">
+                <div class="item-info">
+                  <img src="${it.image||'https://via.placeholder.com/72'}" class="item-img" alt="${it.nom}">
+                  <div>
+                    <div class="item-name">${it.nom}</div>
+                    <div class="item-cat">${it.categorie||''}</div>
+                  </div>
+                </div>
+                <div class="item-price">${it.prix.toLocaleString()} FCFA</div>
+                <div class="item-qty-ctrl">
+                  <button onclick="changeQty('${it.id}',-1)">−</button>
+                  <span>${it.qty}</span>
+                  <button onclick="changeQty('${it.id}',1)">+</button>
+                </div>
+                <div class="item-total">${(it.prix*it.qty).toLocaleString()} FCFA</div>
+                <button class="item-del" onclick="removeItem('${it.id}')"><i class="bi bi-trash3"></i></button>
+              </div>`).join('')}
+          </div>
+          <div class="panier-actions">
+            <button class="btn-clear" onclick="clearCart()"><i class="bi bi-trash3"></i> Vider le panier</button>
+            <a href="produits.html" class="btn-continue-shop"><i class="bi bi-arrow-left"></i> Continuer mes achats</a>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="recap">
+          <div class="recap-title">Récapitulatif</div>
+          <div class="recap-row"><span class="recap-row-label">Sous-total (${count} articles)</span><span class="recap-row-val">${total.toLocaleString()} FCFA</span></div>
+          <div class="recap-row"><span class="recap-row-label">Livraison</span><span class="recap-row-val" style="color:var(--sn-green)">À définir</span></div>
+          <div class="recap-divider"></div>
+          <div class="recap-total-row">
+            <span class="recap-total-label">Total estimé</span>
+            <div style="text-align:right"><div class="recap-total-val">${total.toLocaleString()}</div><div class="recap-total-fcfa">FCFA</div></div>
+          </div>
+          <div class="promo-row">
+            <input type="text" class="promo-input" placeholder="Code promo" id="promoInput">
+            <button class="btn-promo-apply" onclick="applyPromo()">Appliquer</button>
+          </div>
+          <button class="btn-order" onclick="showOrderModal()"><i class="bi bi-bag-check-fill"></i> Passer la commande</button>
+          <a href="https://wa.me/221XXXXXXXX?text=${buildWAMessage(cart)}" target="_blank" class="btn-order-wa"><i class="bi bi-whatsapp"></i> Commander via WhatsApp</a>
+          <div class="secure-note"><i class="bi bi-shield-lock-fill" style="color:var(--blue)"></i> Paiement 100% sécurisé</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function applyPromo() {
+  const code = document.getElementById('promoInput')?.value.trim().toUpperCase();
+  if (code === 'SPORT10') showToast('✅ -10% appliqué !', '#22c55e');
+  else showToast('Code promo invalide', '#FF3B30');
+}
+
+function showOrderModal() {
+  const cart = getCart();
+  const total = cart.reduce((s,i)=>s+i.prix*i.qty,0);
+  const modal = document.createElement('div');
+  modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:3000;display:flex;align-items:center;justify-content:center;padding:20px';
+  modal.innerHTML=`
+    <div style="background:var(--white);border-radius:var(--radius-lg);padding:28px;max-width:480px;width:100%;box-shadow:var(--shadow-lg)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <div style="font-size:18px;font-weight:900">Finaliser la commande</div>
+        <button onclick="this.closest('[style*=fixed]').remove()" style="background:var(--bg);border:1.5px solid var(--border);border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div style="margin-bottom:16px">
+        <label style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:6px">Nom complet *</label>
+        <input id="orderName" style="width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:11px 14px;font-family:'Nunito',sans-serif;font-size:14px;outline:none" placeholder="Ton prénom et nom">
+      </div>
+      <div style="margin-bottom:16px">
+        <label style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:6px">Numéro WhatsApp *</label>
+        <input id="orderPhone" style="width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:11px 14px;font-family:'Nunito',sans-serif;font-size:14px;outline:none" placeholder="+221 77 000 00 00">
+      </div>
+      <div style="margin-bottom:20px">
+        <label style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:6px">Adresse de livraison *</label>
+        <input id="orderAddr" style="width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:11px 14px;font-family:'Nunito',sans-serif;font-size:14px;outline:none" placeholder="Quartier, ville, Sénégal">
+      </div>
+      <div style="background:var(--bg);border-radius:8px;padding:14px;margin-bottom:20px;font-size:14px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="color:var(--text2)">${cart.length} article(s)</span><span style="font-weight:900">${total.toLocaleString()} FCFA</span></div>
+        <div style="display:flex;justify-content:space-between"><span style="color:var(--text2)">Livraison</span><span style="color:var(--sn-green);font-weight:700">À confirmer</span></div>
+      </div>
+      <button onclick="submitOrder()" style="width:100%;background:var(--blue);color:#fff;border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer">Confirmer la commande</button>
+    </div>`;
+  document.body.appendChild(modal);
+}
+
+function submitOrder() {
+  const name = document.getElementById('orderName')?.value.trim();
+  const phone = document.getElementById('orderPhone')?.value.trim();
+  const addr = document.getElementById('orderAddr')?.value.trim();
+  if (!name||!phone||!addr) { showToast('Remplis tous les champs', '#FF3B30'); return; }
+  const cart = getCart();
+  const total = cart.reduce((s,i)=>s+i.prix*i.qty,0);
+  const lines = cart.map(it=>`• ${it.nom} x${it.qty} = ${(it.prix*it.qty).toLocaleString()} FCFA`).join('\n');
+  const msg = `Nouvelle commande SportKit SN ! 🛒\n\nClient: ${name}\nTél: ${phone}\nAdresse: ${addr}\n\nArticles:\n${lines}\n\nTotal: ${total.toLocaleString()} FCFA`;
+  document.querySelector('[style*=fixed]')?.remove();
+  window.open(`https://wa.me/221XXXXXXXX?text=${encodeURIComponent(msg)}`, '_blank');
+  localStorage.removeItem('sportkit_cart');
+  updateBadge();
+  showToast('✅ Commande envoyée ! On te contacte bientôt.', '#22c55e');
+  setTimeout(() => renderPanier(), 500);
+}
+
+document.getElementById('cartBtn').onclick = () => {};
+updateBadge();
+renderPanier();
+</script>
+</body>
+</html>

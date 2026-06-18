@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="SportKit SN — Tout pour performer. Équipements sportifs au Sénégal.">
+<title>SportKit SN — Tout pour performer</title>
+<link rel="icon" type="image/png" href="assets/images/logo1.png">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- SPLASH -->
+<div class="splash" id="splash">
+  <img src="assets/images/logo1.png" alt="SportKit SN" class="splash-logo">
+  <div class="splash-bar"><div class="splash-fill"></div></div>
+  <div class="splash-text">Tout pour performer</div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-bar">
+  <div class="ticker-track">
+    <span class="ticker-item"><i class="bi bi-truck-fill"></i> Livraison rapide partout à Thiès/span>
+    <span class="ticker-item"><i class="bi bi-shield-check-fill"></i> Paiement 100% sécurisé</span>
+    <span class="ticker-item"><i class="bi bi-arrow-counterclockwise"></i> Satisfaction garantie — 7 jours pour retourner</span>
+    <span class="ticker-item"><i class="bi bi-headset"></i> Support client 7j/7 via WhatsApp</span>
+    <span class="ticker-item"><i class="bi bi-star-fill"></i> +50 clients satisfaits à Thiès</span>
+    <span class="ticker-item"><i class="bi bi-truck-fill"></i> Livraison rapide partout à Thiès</span>
+    <span class="ticker-item"><i class="bi bi-shield-check-fill"></i> Paiement 100% sécurisé</span>
+    <span class="ticker-item"><i class="bi bi-arrow-counterclockwise"></i> Satisfaction garantie — 7 jours pour retourner</span>
+    <span class="ticker-item"><i class="bi bi-headset"></i> Support client 7j/7 via WhatsApp</span>
+    <span class="ticker-item"><i class="bi bi-star-fill"></i> +50 clients satisfaits au Sénégal</span>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html">
+      <img src="assets/images/logonav1.png" alt="SportKit SN" class="navbar-logo">
+    </a>
+  <div class="navbar-search">
+    <input type="text" placeholder="Rechercher un produit..." id="searchInput">
+    <button class="search-btn" id="searchClearBtn" style="display:none;background:var(--text2)" onclick="clearSearch()"><i class="bi bi-x-lg"></i></button>
+    <button class="search-btn" id="searchGoBtn"><i class="bi bi-search"></i></button>
+  </div>
+    <div class="navbar-right">
+      <a href="produits.html" class="nav-link"><i class="bi bi-grid-3x3-gap-fill"></i> Produits</a>
+      <a href="contact.html" class="nav-link">Contacts</a>
+      <button class="nav-cart-btn" id="cartBtn">
+        <i class="bi bi-cart3"></i>
+        <span class="cart-badge" id="cartBadge">0</span>
+      </button>
+      <button class="nav-cart-btn" id="searchMobileBtn" style="display:none">
+        <i class="bi bi-search"></i>
+      </button>
+      <button class="hamburger" id="menuBtn"><i class="bi bi-list"></i></button>
+    </div>
+  </div>
+</nav>
+
+<!-- SEARCH DROPDOWN MOBILE -->
+<div class="mobile-search-bar" id="mobileSearchBar">
+  <div class="search-wrap" style="position:relative">
+    <input type="text" placeholder="Rechercher un produit..." id="searchMobile" style="width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:11px 44px 11px 16px;font-family:'Nunito',sans-serif;font-size:14px;outline:none;color:var(--text)">
+    <button class="search-btn" style="border-radius:0 8px 8px 0"><i class="bi bi-search"></i></button>
+  </div>
+</div>
+
+<!-- CATEGORY NAV -->
+<div class="cat-nav">
+  <div class="cat-nav-inner">
+    <button class="cat-nav-btn active" data-cat="tous">Tous</button>
+    <button class="cat-nav-btn" data-cat="Arts martiaux">🥊 Arts Martiaux</button>
+    <button class="cat-nav-btn" data-cat="Flag football">🏈 Flag Football</button>
+    <button class="cat-nav-btn" data-cat="Fitness">💪 Fitness</button>
+    <button class="cat-nav-btn" data-cat="Running">🏃 Running</button>
+    <button class="cat-nav-btn" data-cat="Matériels électroniques">📱 Électronique</button>
+    <button class="cat-nav-btn" data-cat="Vêtements">🎽 Vêtements</button>
+    <button class="cat-nav-btn" data-cat="Accessoires">🎒 Accessoires</button>
+    <a href="produits.html" class="cat-nav-btn" style="color:var(--blue);margin-left:auto">Voir tous →</a>
+  </div>
+</div>
+
+<!-- MOBILE DRAWER -->
+<div class="mobile-drawer" id="mobileDrawer">
+  <div class="drawer-head">
+    <img src="assets/images/logonav1.png" alt="SportKit SN" class="drawer-logo">
+    <button class="drawer-close" id="drawerClose"><i class="bi bi-x-lg"></i></button>
+  </div>
+  <div class="drawer-body">
+    <a href="index.html" class="drawer-link active"><i class="bi bi-house-fill"></i> Accueil</a>
+    <a href="produits.html" class="drawer-link"><i class="bi bi-grid-3x3-gap-fill"></i> Catalogue</a>
+    <a href="panier.html" class="drawer-link"><i class="bi bi-bag-fill"></i> Mon panier</a>
+    <a href="contact.html" class="drawer-link"><i class="bi bi-chat-dots-fill"></i> Contacts</a>
+    <div class="drawer-sep"></div>
+    <a href="https://wa.me/221774523213" class="drawer-wa"><i class="bi bi-whatsapp"></i> Commander via WhatsApp</a>
+  </div>
+</div>
+
+<!-- CART -->
+<div class="cart-overlay" id="cartOverlay"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-head">
+    <div class="cart-title-txt">Mon Panier 🛒</div>
+    <button class="cart-close-x" id="cartClose"><i class="bi bi-x-lg"></i></button>
+  </div>
+  <div class="cart-body-scroll" id="cartBody">
+    <div class="cart-empty-msg">
+      <i class="bi bi-bag"></i>
+      <div style="font-size:15px;font-weight:800;margin-bottom:4px">Panier vide</div>
+      <div style="font-size:13px">Ajoute des produits pour commencer</div>
+    </div>
+  </div>
+  <div class="cart-foot">
+    <div class="cart-total-row">
+      <span class="cart-total-lbl">Total</span>
+      <div><span class="cart-total-val" id="cartTotal">0</span> <span style="font-size:13px;color:var(--text2)">FCFA</span></div>
+    </div>
+    <a href="panier.html" class="btn-go-cart"><i class="bi bi-bag-check-fill"></i> Voir mon panier</a>
+    <a href="https://wa.me/221774523213" target="_blank" class="btn-go-wa"><i class="bi bi-whatsapp"></i> Commander via WhatsApp</a>
+  </div>
+</div>
+
+<!-- HERO SLIDER -->
+<div class="hero-slider" id="heroSlider">
+  <div class="slides" id="slidesTrack">
+    <div class="slide active">
+      <div class="slide-bg" style="background-image:url('https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=1400&q=85')"></div>
+      <div class="slide-overlay"></div>
+      <div class="slide-content">
+        <div class="slide-tag"><i class="bi bi-lightning-charge-fill"></i> Arts Martiaux & Boxe</div>
+        <h1 class="slide-title">Équipez-vous, <br><span>Combattez.</span></h1>
+        <p class="slide-desc">Des gants, casques et protections pour les vrais combattants sénégalais.</p>
+        <div class="slide-btns">
+          <a href="produits.html?cat=Arts+martiaux" class="btn-hero-primary"><i class="bi bi-arrow-right-circle-fill"></i> Découvrir nos produits</a>
+          <a href="contact.html" class="btn-hero-outline"><i class="bi bi-whatsapp"></i> Voir les promotions</a>
+        </div>
+      </div>
+    </div>
+    <div class="slide">
+      <div class="slide-bg" style="background-image:url('https://images.unsplash.com/photo-1566577739112-5180d4bf9390?w=1400&q=85')"></div>
+      <div class="slide-overlay"></div>
+      <div class="slide-content">
+        <div class="slide-tag"><i class="bi bi-trophy-fill"></i> Flag Football</div>
+        <h1 class="slide-title">Joue &<br><span>Performe.</span></h1>
+        <p class="slide-desc">Kits complets, drapeaux et maillots pour ton équipe de flag football.</p>
+        <div class="slide-btns">
+          <a href="produits.html?cat=Flag+football" class="btn-hero-primary"><i class="bi bi-arrow-right-circle-fill"></i> Voir les kits flag</a>
+          <a href="contact.html" class="btn-hero-outline"><i class="bi bi-whatsapp"></i> Nous contacter</a>
+        </div>
+      </div>
+    </div>
+    <div class="slide">
+      <div class="slide-bg" style="background-image:url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1400&q=85')"></div>
+      <div class="slide-overlay"></div>
+      <div class="slide-content">
+        <div class="slide-tag"><i class="bi bi-fire"></i> Fitness & Musculation</div>
+        <h1 class="slide-title">Forge<br><span>ton corps.</span></h1>
+        <p class="slide-desc">Haltères, cordes et accessoires fitness pour t'entraîner partout.</p>
+        <div class="slide-btns">
+          <a href="produits.html?cat=Fitness" class="btn-hero-primary"><i class="bi bi-arrow-right-circle-fill"></i> Voir le fitness</a>
+          <a href="contact.html" class="btn-hero-outline"><i class="bi bi-whatsapp"></i> Nous contacter</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slider-arrows">
+    <button class="slider-arrow" id="prevSlide"><i class="bi bi-chevron-left"></i></button>
+    <button class="slider-arrow" id="nextSlide"><i class="bi bi-chevron-right"></i></button>
+  </div>
+  <div class="slider-dots">
+    <div class="slider-dot active" data-idx="0"></div>
+    <div class="slider-dot" data-idx="1"></div>
+    <div class="slider-dot" data-idx="2"></div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<div class="features-strip">
+  <div class="features-strip-inner">
+    <div class="feat reveal reveal-delay-1"><i class="bi bi-truck"></i><span>Livraison rapide — Partout à Thiès</span></div>
+    <div class="feat reveal reveal-delay-2"><i class="bi bi-shield-lock-fill"></i><span>Paiement sécurisé — 100% fiable</span></div>
+    <div class="feat reveal reveal-delay-3"><i class="bi bi-emoji-smile-fill"></i><span>Satisfaction garantie</span></div>
+    <div class="feat reveal reveal-delay-4"><i class="bi bi-headset"></i><span>Support 7j/7 — WhatsApp</span></div>
+  </div>
+</div>
+
+<!-- PAGE -->
+<div class="page-wrap">
+
+  <!-- PRODUITS -->
+  <div class="section">
+    <div class="sec-head reveal">
+      <div class="sec-title">NOS <span>PRODUITS</span></div>
+      <a href="produits.html" class="sec-link">Voir tout <i class="bi bi-arrow-right"></i></a>
+    </div>
+    <div class="filter-pills">
+      <button class="filter-pill active" data-cat="tous">Tous</button>
+      <button class="filter-pill" data-cat="Arts martiaux">🥊 Arts Martiaux</button>
+      <button class="filter-pill" data-cat="Flag football">🏈 Flag Football</button>
+      <button class="filter-pill" data-cat="Fitness">💪 Fitness</button>
+      <button class="filter-pill" data-cat="Running">🏃 Running</button>
+      <button class="filter-pill" data-cat="Matériels électroniques">📱 Électronique</button>
+      <button class="filter-pill" data-cat="Vêtements">🎽 Vêtements</button>
+      <button class="filter-pill" data-cat="Accessoires">🎒 Accessoires</button>
+    </div>
+    <div class="prod-grid" id="produitsGrid">
+      <div class="sk-card"><div class="sk sk-img"></div><div class="sk-pad"><div class="sk sk-line" style="width:55%"></div><div class="sk sk-line" style="width:80%"></div><div class="sk sk-btn-line"></div></div></div>
+      <div class="sk-card"><div class="sk sk-img"></div><div class="sk-pad"><div class="sk sk-line" style="width:55%"></div><div class="sk sk-line" style="width:80%"></div><div class="sk sk-btn-line"></div></div></div>
+      <div class="sk-card"><div class="sk sk-img"></div><div class="sk-pad"><div class="sk sk-line" style="width:55%"></div><div class="sk sk-line" style="width:80%"></div><div class="sk sk-btn-line"></div></div></div>
+      <div class="sk-card"><div class="sk sk-img"></div><div class="sk-pad"><div class="sk sk-line" style="width:55%"></div><div class="sk sk-line" style="width:80%"></div><div class="sk sk-btn-line"></div></div></div>
+      <div class="sk-card"><div class="sk sk-img"></div><div class="sk-pad"><div class="sk sk-line" style="width:55%"></div><div class="sk sk-line" style="width:80%"></div><div class="sk sk-btn-line"></div></div></div>
+    </div>
+    <div class="load-more-wrap" id="loadMoreWrap" style="display:none">
+      <button class="btn-load-more" id="loadMoreBtn"><i class="bi bi-plus-circle"></i> Voir plus de produits</button>
+    </div>
+  </div>
+
+  <!-- PROMOTIONS -->
+  <div class="section" style="padding-top:0">
+  <div class="sec-head reveal">
+    <div class="sec-title">PROMOTIONS <span>DU MOMENT</span></div>
+    <a href="produits.html" class="sec-link">Voir toutes <i class="bi bi-arrow-right"></i></a>
+  </div>
+  <div class="promo-grid" id="promoGrid"></div>
+</div>
+
+  <!-- MA SÉLECTION -->
+  <div class="section" style="padding-top:0">
+    <div class="sec-head reveal">
+      <div class="sec-title">❤️ Ma <span>Sélection</span></div>
+      <a href="panier.html" class="sec-link">Voir tout <i class="bi bi-arrow-right"></i></a>
+    </div>
+    <div class="wishlist-section">
+      <div id="wishlistContent">
+        <div class="wishlist-empty">
+          <i class="bi bi-heart"></i>
+          <div style="font-size:15px;font-weight:800;margin-bottom:6px">Ta sélection est vide</div>
+          <div style="font-size:13px">Clique sur ❤️ sur un produit pour le sauvegarder ici</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- DEMANDE PRODUIT -->
+<div class="section" style="padding-top:0">
+  <div class="sec-head reveal">
+    <div class="sec-title">VOUS NE TROUVEZ PAS <span>CE QUE VOUS CHERCHEZ ?</span></div>
+  </div>
+  <div class="demande-card">
+    <div class="demande-left reveal-left">
+      <div class="demande-icon"><i class="bi bi-search-heart"></i></div>
+      <div class="demande-title">Dites-nous ce qu'il vous faut</div>
+      <div class="demande-desc">Décrivez le produit que vous cherchez, ajoutez des photos si vous en avez, et on vous répond rapidement sur WhatsApp ou par email.</div>
+      <div class="demande-badges">
+        <span class="demande-badge"><i class="bi bi-whatsapp"></i> Réponse WhatsApp</span>
+        <span class="demande-badge"><i class="bi bi-envelope-fill"></i> Réponse Email</span>
+        <span class="demande-badge"><i class="bi bi-clock-fill"></i> Sous 24h</span>
+      </div>
+    </div>
+    <div class="demande-right reveal-right">
+      <div class="demande-field">
+        <label class="demande-label">Votre nom <span style="color:#ef4444">*</span></label>
+        <input type="text" id="demandeNom" class="demande-input" placeholder="Ex: Mamadou Diallo">
+      </div>
+      <div class="demande-field">
+        <label class="demande-label">Votre WhatsApp <span style="color:#ef4444">*</span></label>
+        <input type="tel" id="demandePhone" class="demande-input" placeholder="Ex: 221 77 123 45 67">
+      </div>
+      <div class="demande-field">
+        <label class="demande-label">Décrivez le produit recherché <span style="color:#ef4444">*</span></label>
+        <textarea id="demandeTexte" class="demande-input demande-textarea" placeholder="Ex: Je cherche des gants de boxe taille M, couleur rouge..."></textarea>
+      </div>
+      <div class="demande-field">
+        <label class="demande-label">Photos <span style="color:var(--text2);font-weight:500;font-size:12px">(optionnel — 2 max)</span></label>
+        <div class="demande-upload-zone" id="demandeUploadZone" onclick="document.getElementById('demandePhotos').click()">
+          <i class="bi bi-image" style="font-size:28px;color:var(--blue);opacity:.6"></i>
+          <div style="font-size:13px;font-weight:700;margin-top:6px">Cliquer pour ajouter des photos</div>
+          <div style="font-size:11px;color:var(--text2);margin-top:2px">JPG, PNG — 2 photos max</div>
+        </div>
+        <input type="file" id="demandePhotos" accept="image/*" multiple style="display:none" onchange="handleDemandePhotos(this)">
+        <div class="demande-previews" id="demandePreviews"></div>
+      </div>
+      <button class="demande-btn" id="demandeBtn" onclick="envoyerDemande()">
+        <i class="bi bi-send-fill"></i> Envoyer ma demande
+      </button>
+      <div id="demandeSuccess" style="display:none;text-align:center;padding:18px;background:#f0fdf4;border-radius:12px;border:1.5px solid #22c55e">
+        <i class="bi bi-check-circle-fill" style="font-size:28px;color:#22c55e;display:block;margin-bottom:8px"></i>
+        <div style="font-weight:800;font-size:15px;color:#15803d">Demande envoyée !</div>
+        <div style="font-size:13px;color:#166534;margin-top:4px">On vous répond dans les 24h. Merci !</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- NEWSLETTER -->
+  <div class="section" style="padding-top:0">
+    <div class="newsletter reveal">
+      <div class="nl-left">
+        <div class="nl-icon"><i class="bi bi-envelope-fill"></i></div>
+        <div class="nl-title">Inscrivez-vous et recevez nos offres exclusives !</div>
+        <div class="nl-desc">Soyez le premier informé des nouveautés, promotions et conseils sportifs.</div>
+      </div>
+      <div class="nl-form">
+        <input type="email" class="nl-input" placeholder="Votre adresse email">
+        <input type="tel" class="nl-input" placeholder="Votre numéro WhatsApp">
+        <button class="nl-btn"><i class="bi bi-send-fill"></i> S'inscrire</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <img src="assets/images/logo1.png" alt="SportKit SN" class="footer-logo">
+        <p class="footer-desc">Votre boutique d'équipements sportifs de qualité au Sénégal.</p>
+        <div class="footer-socials">
+          <a href="#" class="footer-soc"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="footer-soc"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="footer-soc"><i class="bi bi-tiktok"></i></a>
+          <a href="#" class="footer-soc"><i class="bi bi-youtube"></i></a>
+        </div>
+        <div class="footer-flag" style="margin-top:12px">
+          <span style="background:var(--sn-green)"></span>
+          <span style="background:var(--sn-yellow)"></span>
+          <span style="background:var(--sn-red)"></span>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Boutique</div>
+        <div class="footer-links">
+          <a href="produits.html" class="footer-link">Tous les produits</a>
+          <a href="produits.html?cat=Arts+martiaux" class="footer-link">Arts Martiaux</a>
+          <a href="produits.html?cat=Flag+football" class="footer-link">Flag Football</a>
+          <a href="produits.html?cat=Fitness" class="footer-link">Fitness</a>
+          <a href="produits.html?cat=Running" class="footer-link">Running</a>
+          <a href="produits.html?cat=Vêtements" class="footer-link">Vêtements</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Informations</div>
+        <div class="footer-links">
+          <a href="#" class="footer-link">À propos de nous</a>
+          <a href="#" class="footer-link">Livraison</a>
+          <a href="#" class="footer-link">Paiement sécurisé</a>
+          <a href="#" class="footer-link">Retours & Remboursements</a>
+          <a href="#" class="footer-link">Conditions générales</a>
+          <a href="#" class="footer-link">FAQ</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Mon Compte</div>
+        <div class="footer-links">
+          <a href="#" class="footer-link">Mon profil</a>
+          <a href="panier.html" class="footer-link">Mes commandes</a>
+          <a href="#" class="footer-link">Mes favoris</a>
+          <a href="#" class="footer-link">Suivi de commande</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Contacts</div>
+        <div class="footer-contact-item"><i class="bi bi-telephone-fill"></i><span>+221 77 123 45 67</span></div>
+        <div class="footer-contact-item"><i class="bi bi-envelope-fill"></i><span>contact@sportkitsn.com</span></div>
+        <div class="footer-contact-item"><i class="bi bi-geo-alt-fill"></i><span>Thiès, Sénégal</span></div>
+        <div class="footer-contact-item"><i class="bi bi-clock-fill"></i><span>Lun–Ven: 8h–18h · Sam: 9h–16h</span></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 SportKit SN. Tous droits réservés.</div>
+      <div style="display:flex;align-items:center;gap:6px">Conçu avec <i class="bi bi-heart-fill" style="color:black"></i> au Sénégal by Qayyah</div>
+    </div>
+  </div>
+</footer>
+
+<a href="https://wa.me/2214523213" target="_blank" class="wa-float"><i class="bi bi-whatsapp"></i></a>
+<div class="toast-stack" id="toastStack"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+const app = firebase.initializeApp({ apiKey:"AIzaSyDQo0JvBPuJlrC4zeynhU1_sb0he5rKtFc", authDomain:"sportkit-sn.firebaseapp.com", projectId:"sportkit-sn", storageBucket:"sportkit-sn.firebasestorage.app", messagingSenderId:"619214960191", appId:"1:619214960191:web:442eda9bfac65fb5c8ea8a" });
+const db = firebase.firestore();
+emailjs.init('sTvlv761m99tgqb6c');
+
+// SPLASH
+window.addEventListener('load', () => {
+  if (sessionStorage.getItem('splashShown')) {
+    document.getElementById('splash').classList.add('gone');
+  } else {
+    sessionStorage.setItem('splashShown', '1');
+    setTimeout(() => document.getElementById('splash').classList.add('gone'), 3000);
+  }
+});
+
+// SLIDER
+let cur = 0, auto;
+const slides = document.querySelectorAll('.slide');
+const dots = document.querySelectorAll('.slider-dot');
+function goTo(i) {
+  slides[cur].classList.remove('active'); dots[cur].classList.remove('active');
+  cur = (i + slides.length) % slides.length;
+  slides[cur].classList.add('active'); dots[cur].classList.add('active');
+  document.getElementById('slidesTrack').style.transform = `translateX(-${cur*100}%)`;
+}
+function startAuto() { auto = setInterval(() => goTo(cur + 1), 5000); }
+function stopAuto() { clearInterval(auto); }
+document.getElementById('nextSlide').onclick = () => { stopAuto(); goTo(cur+1); startAuto(); };
+document.getElementById('prevSlide').onclick = () => { stopAuto(); goTo(cur-1); startAuto(); };
+dots.forEach(d => d.addEventListener('click', () => { stopAuto(); goTo(+d.dataset.idx); startAuto(); }));
+let tx = 0;
+document.getElementById('heroSlider').addEventListener('touchstart', e => { tx = e.changedTouches[0].screenX; }, {passive:true});
+document.getElementById('heroSlider').addEventListener('touchend', e => { const d = tx - e.changedTouches[0].screenX; if (Math.abs(d) > 40) { stopAuto(); goTo(d > 0 ? cur+1 : cur-1); startAuto(); } }, {passive:true});
+startAuto();
+
+// DRAWER + SEARCH MOBILE
+document.getElementById('menuBtn').onclick = () => document.getElementById('mobileDrawer').classList.add('open');
+document.getElementById('drawerClose').onclick = () => document.getElementById('mobileDrawer').classList.remove('open');
+document.getElementById('searchMobileBtn').onclick = () => {
+  const bar = document.getElementById('mobileSearchBar');
+  bar.classList.toggle('open');
+  if (bar.classList.contains('open')) document.getElementById('searchMobile').focus();
+};
+
+// CART
+const cartBtn = document.getElementById('cartBtn'), cartClose = document.getElementById('cartClose'), cartOverlay = document.getElementById('cartOverlay'), cartSidebar = document.getElementById('cartSidebar');
+const openCart = () => { cartSidebar.classList.add('open'); cartOverlay.classList.add('open'); document.body.style.overflow='hidden'; renderCart(); };
+const closeCart = () => { cartSidebar.classList.remove('open'); cartOverlay.classList.remove('open'); document.body.style.overflow=''; };
+cartBtn.onclick = openCart; cartClose.onclick = closeCart; cartOverlay.onclick = closeCart;
+const getCart = () => JSON.parse(localStorage.getItem('sportkit_cart') || '[]');
+const saveCart = c => { localStorage.setItem('sportkit_cart', JSON.stringify(c)); updateBadge(); };
+const updateBadge = () => { document.getElementById('cartBadge').textContent = getCart().reduce((s,i) => s+i.qty, 0); };
+window.addToCart = p => { const c = getCart(); const i = c.findIndex(x => x.id===p.id); if(i>-1) c[i].qty++; else c.push({...p,qty:1}); saveCart(c); showToast('✅ '+p.nom+' ajouté !', '#22c55e'); };
+window.changeQty = (id,d) => { const c=getCart(); const i=c.findIndex(x=>x.id===id); if(i>-1){c[i].qty+=d;if(c[i].qty<=0)c.splice(i,1);} saveCart(c); renderCart(); };
+window.removeItem = id => { saveCart(getCart().filter(x=>x.id!==id)); renderCart(); };
+function renderCart() {
+  const c=getCart(), body=document.getElementById('cartBody'), tot=document.getElementById('cartTotal');
+  if(!c.length){body.innerHTML='<div class="cart-empty-msg"><i class="bi bi-bag"></i><div style="font-size:15px;font-weight:800;margin-bottom:4px">Panier vide</div><div style="font-size:13px">Ajoute des produits pour commencer</div></div>';tot.textContent='0';return;}
+  let total=0;
+  body.innerHTML=c.map(it=>{total+=it.prix*it.qty;return`<div class="citem"><img src="${it.image||'https://via.placeholder.com/64'}" class="citem-img" alt="${it.nom}"><div style="flex:1"><div class="citem-name">${it.nom}</div><div class="citem-price">${it.prix.toLocaleString()} FCFA</div><div class="citem-qty"><button class="qbtn" onclick="changeQty('${it.id}',-1)">−</button><span class="qnum">${it.qty}</span><button class="qbtn" onclick="changeQty('${it.id}',1)">+</button><button class="qbtn" onclick="removeItem('${it.id}')" style="margin-left:6px;color:#FF3B30"><i class="bi bi-trash3"></i></button></div></div></div>`;}).join('');
+  tot.textContent=total.toLocaleString();
+}
+
+// WISHLIST
+const getWish = () => JSON.parse(localStorage.getItem('sportkit_wish') || '[]');
+const saveWish = w => localStorage.setItem('sportkit_wish', JSON.stringify(w));
+window.toggleWish = (p, btn) => {
+  const w=getWish(); const i=w.findIndex(x=>x.id===p.id);
+  if(i>-1){w.splice(i,1);btn.innerHTML='<i class="bi bi-heart"></i>';btn.style.color='';showToast('Retiré de ta sélection','#FF3B30');}
+  else{w.push(p);btn.innerHTML='<i class="bi bi-heart-fill"></i>';btn.style.color='#FF3B30';showToast('❤️ Ajouté à ta sélection','#FF3B30');}
+  saveWish(w); renderWishlist();
+};
+function renderWishlist() {
+  const w=getWish(), el=document.getElementById('wishlistContent');
+  if(!w.length){el.innerHTML='<div class="wishlist-empty"><i class="bi bi-heart"></i><div style="font-size:15px;font-weight:800;margin-bottom:6px">Ta sélection est vide</div><div style="font-size:13px;color:var(--text2)">Clique sur ❤️ sur un produit pour le sauvegarder ici</div></div>';return;}
+  el.innerHTML=`<div class="wishlist-list">${w.map((p,idx)=>`<div class="wl-item" onclick="window.location.href='produit.html?id=${p.id}'"><span class="wl-num">${idx+1}</span><div style="flex:1"><div class="wl-name">${p.nom}</div><div class="wl-cat">${p.categorie||''}</div></div><span class="wl-price">${p.prix.toLocaleString()} FCFA</span><button class="wl-remove" onclick="event.stopPropagation();removeWish('${p.id}')"><i class="bi bi-x"></i></button></div>`).join('')}</div>`;
+}
+window.removeWish = id => { saveWish(getWish().filter(x=>x.id!==id)); renderWishlist(); };
+
+// TOAST
+function showToast(msg, color='#22c55e') {
+  const s=document.getElementById('toastStack'); const t=document.createElement('div'); t.className='tst';
+  t.innerHTML=`<div class="tst-dot" style="background:${color}"></div><span>${msg}</span>`;
+  s.appendChild(t); requestAnimationFrame(()=>t.classList.add('show'));
+  setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),400);},3000);
+}
+
+// PRODUITS FIREBASE
+let allP=[], displayed=0; const PAGE=10;
+async function loadProduits() {
+  const grid=document.getElementById('produitsGrid');
+  try {
+    const snap = await db.collection("produits").get();
+    allP=snap.docs.map(d=>({id:d.id,...d.data()}));
+    renderP(allP);
+  } catch(e) {
+    grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--text2)"><i class="bi bi-wifi-off" style="font-size:40px;display:block;margin-bottom:12px;opacity:.3"></i>Impossible de charger<br><button onclick="loadProduits()" style="margin-top:12px;padding:8px 20px;border-radius:8px;background:var(--blue);color:#fff;border:none;font-weight:800;cursor:pointer">Réessayer</button></div>';
+  }
+}
+function renderP(list) {
+  const grid=document.getElementById('produitsGrid'), lmw=document.getElementById('loadMoreWrap');
+  if(!list.length){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--text2)"><i class="bi bi-box-seam" style="font-size:40px;display:block;margin-bottom:12px;opacity:.3"></i>Aucun produit dans cette catégorie</div>';lmw.style.display='none';return;}
+  const wish=getWish();
+  grid.innerHTML=list.slice(0,PAGE).map(p=>{
+    const hp=p.comparePrice&&p.comparePrice>p.prix, r=hp?Math.round((1-p.prix/p.comparePrice)*100):0;
+    const sp=JSON.stringify(p).replace(/"/g,'&quot;'), inW=wish.some(x=>x.id===p.id);
+    const stock=p.stock>0?(p.stock<=3?'<span class="pbadge pbadge-dark">Presque épuisé</span>':''):'<span class="pbadge pbadge-red">Rupture</span>';
+    return`<div class="prod-card" onclick="window.location.href='produit.html?id=${p.id}'"><div class="prod-img-wrap"><img src="${p.image||'https://via.placeholder.com/400x400/F5F6FA/0D6EFD?text=SportKit'}" alt="${p.nom}" loading="lazy"><div class="prod-badges">${stock}${hp?`<span class="pbadge pbadge-red">-${r}%</span>`:''}${p.nouveau?'<span class="pbadge pbadge-blue">Nouveau</span>':''}</div><button class="prod-wish" onclick="event.stopPropagation();toggleWish(${sp},this)" style="${inW?'opacity:1;color:#FF3B30':''}">${inW?'<i class="bi bi-heart-fill"></i>':'<i class="bi bi-heart"></i>'}</button></div><div class="prod-body"><div class="prod-cat">${p.categorie||''}</div><div class="prod-name">${p.nom}</div><div class="prod-price-row"><span class="price-main">${(p.prix||0).toLocaleString()}</span><span class="price-fcfa">FCFA</span>${hp?`<span class="price-old">${p.comparePrice.toLocaleString()}</span><span class="price-off">-${r}%</span>`:''}</div><div class="prod-actions"><a href="produit.html?id=${p.id}" class="btn-voir" onclick="event.stopPropagation()"><i class="bi bi-eye"></i> Voir</a><button class="btn-panier" onclick="event.stopPropagation();addToCart(${sp})"><i class="bi bi-bag-plus"></i></button></div></div></div>`;
+  }).join('');
+  displayed=Math.min(PAGE,list.length);
+  if(list.length>PAGE){lmw.style.display='block';document.getElementById('loadMoreBtn').onclick=()=>{list.slice(displayed,displayed+PAGE).forEach(p=>{const sp=JSON.stringify(p).replace(/"/g,'&quot;');const card=document.createElement('div');card.className='prod-card';card.onclick=()=>window.location.href=`produit.html?id=${p.id}`;const hp=p.comparePrice&&p.comparePrice>p.prix,r=hp?Math.round((1-p.prix/p.comparePrice)*100):0;card.innerHTML=`<div class="prod-img-wrap"><img src="${p.image||'https://via.placeholder.com/400x400/F5F6FA/0D6EFD?text=SportKit'}" alt="${p.nom}" loading="lazy">${hp?`<div class="prod-badges"><span class="pbadge pbadge-red">-${r}%</span></div>`:''}</div><div class="prod-body"><div class="prod-cat">${p.categorie||''}</div><div class="prod-name">${p.nom}</div><div class="prod-price-row"><span class="price-main">${(p.prix||0).toLocaleString()}</span><span class="price-fcfa">FCFA</span></div><div class="prod-actions"><a href="produit.html?id=${p.id}" class="btn-voir" onclick="event.stopPropagation()"><i class="bi bi-eye"></i> Voir</a><button class="btn-panier" onclick="event.stopPropagation();addToCart(${sp})"><i class="bi bi-bag-plus"></i></button></div></div>`;grid.appendChild(card);});displayed+=PAGE;if(displayed>=list.length)lmw.style.display='none';}}else{lmw.style.display='none';}
+}
+
+// FILTRES
+document.querySelectorAll('[data-cat]').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('[data-cat]').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    const cat=this.dataset.cat;
+    renderP(cat==='tous'?allP:allP.filter(p=>p.categorie===cat));
+    document.getElementById('produitsGrid').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
+
+// RECHERCHE
+let st;
+function closeSuggestions(){ document.getElementById('suggestBox')?.remove(); }
+function showSuggestions(q, results) {
+  let box = document.getElementById('suggestBox');
+  if(!box){
+    box=document.createElement('div');
+    box.id='suggestBox';
+    box.style.cssText='position:absolute;top:100%;left:0;right:0;background:#fff;border:1.5px solid var(--border);border-radius:0 0 10px 10px;box-shadow:var(--shadow-lg);z-index:999;max-height:280px;overflow-y:auto';
+    document.querySelector('.navbar-search').style.position='relative';
+    document.querySelector('.navbar-search').appendChild(box);
+  }
+  if(!results.length){box.innerHTML='<div style="padding:14px 16px;font-size:13px;color:var(--text2)">Aucun résultat pour "'+q+'"</div>';return;}
+  box.innerHTML=results.slice(0,6).map(p=>`<div onclick="window.location.href='produit.html?id=${p.id}'" style="display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;border-bottom:1px solid var(--border);transition:background .1s" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='#fff'"><img src="${p.image||'https://via.placeholder.com/36'}" style="width:36px;height:36px;border-radius:6px;object-fit:cover;flex-shrink:0"><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.nom}</div><div style="font-size:11px;color:var(--text2)">${p.categorie||''}</div></div><div style="font-size:13px;font-weight:900;color:var(--blue);white-space:nowrap">${(p.prix||0).toLocaleString()} FCFA</div></div>`).join('')+(results.length>6?`<div onclick="closeSuggestions()" style="padding:10px 14px;font-size:12px;font-weight:700;color:var(--blue);text-align:center;cursor:pointer">${results.length} résultats</div>`:'');
+}
+document.getElementById('searchInput').addEventListener('input', e => {
+  const val=e.target.value;
+  document.getElementById('searchClearBtn').style.display=val.trim()?'flex':'none';
+  document.getElementById('searchGoBtn').style.display=val.trim()?'none':'flex';
+  clearTimeout(st);
+  if(!val.trim()){closeSuggestions();return;}
+  st=setTimeout(()=>{
+    const r=val.toLowerCase();
+    const results=allP.filter(p=>p.nom?.toLowerCase().includes(r)||p.categorie?.toLowerCase().includes(r));
+    showSuggestions(val,results);
+  },200);
+});
+document.getElementById('searchInput').addEventListener('keydown', e => {
+  if(e.key==='Enter'){closeSuggestions();window.location.href=`produits.html?q=${encodeURIComponent(e.target.value)}`;}
+  if(e.key==='Escape'){closeSuggestions();document.getElementById('searchInput').value='';document.getElementById('searchClearBtn').style.display='none';document.getElementById('searchGoBtn').style.display='flex';}
+});
+document.getElementById('searchGoBtn').onclick=()=>{const v=document.getElementById('searchInput').value;if(v.trim())window.location.href=`produits.html?q=${encodeURIComponent(v)}`;};
+document.addEventListener('click', e => { if(!e.target.closest('.navbar-search')) closeSuggestions(); });
+document.getElementById('searchMobile').addEventListener('input', e => {
+  clearTimeout(st);if(!e.target.value.trim())return;
+  st=setTimeout(()=>{const r=e.target.value.toLowerCase();const results=allP.filter(p=>p.nom?.toLowerCase().includes(r)||p.categorie?.toLowerCase().includes(r));showSuggestions(e.target.value,results);},200);
+});
+document.getElementById('searchMobile').addEventListener('keydown', e => {
+  if(e.key==='Enter')window.location.href=`produits.html?q=${encodeURIComponent(e.target.value)}`;
+});
+window.clearSearch=()=>{document.getElementById('searchInput').value='';document.getElementById('searchClearBtn').style.display='none';document.getElementById('searchGoBtn').style.display='flex';closeSuggestions();};
+
+// EMAILJS CONFIG
+const EJS_SERVICE_ID  = 'service_3x1va9b';
+const EJS_TEMPLATE_ID = 'opn1o88';
+
+// DEMANDE PRODUIT
+let demandeFiles = [];
+window.handleDemandePhotos = input => {
+  const files = Array.from(input.files).slice(0, 2 - demandeFiles.length);
+  files.forEach(file => {
+    if (demandeFiles.length >= 2) return;
+    demandeFiles.push(file);
+    const reader = new FileReader();
+    reader.onload = e => {
+      const prev = document.getElementById('demandePreviews');
+      const idx = demandeFiles.length - 1;
+      const wrap = document.createElement('div');
+      wrap.className = 'demande-preview-wrap';
+      wrap.dataset.idx = idx;
+      wrap.innerHTML = `<img src="${e.target.result}"><button class="demande-preview-rm" onclick="removeDemandePhoto(${idx})"><i class="bi bi-x"></i></button>`;
+      prev.appendChild(wrap);
+    };
+    reader.readAsDataURL(file);
+  });
+  input.value = '';
+  if (demandeFiles.length >= 2) document.getElementById('demandeUploadZone').style.opacity = '.4';
+};
+window.removeDemandePhoto = idx => {
+  demandeFiles.splice(idx, 1);
+  const prev = document.getElementById('demandePreviews');
+  prev.innerHTML = '';
+  demandeFiles.forEach((f, i) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const wrap = document.createElement('div');
+      wrap.className = 'demande-preview-wrap';
+      wrap.innerHTML = `<img src="${e.target.result}"><button class="demande-preview-rm" onclick="removeDemandePhoto(${i})"><i class="bi bi-x"></i></button>`;
+      prev.appendChild(wrap);
+    };
+    reader.readAsDataURL(f);
+  });
+  document.getElementById('demandeUploadZone').style.opacity = '1';
+};
+window.envoyerDemande = async () => {
+  const nom   = document.getElementById('demandeNom').value.trim();
+  const phone = document.getElementById('demandePhone').value.trim();
+  const texte = document.getElementById('demandeTexte').value.trim();
+  if (!nom || !phone || !texte) { showToast('⚠️ Remplis tous les champs obligatoires', '#f59e0b'); return; }
+  const btn = document.getElementById('demandeBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Envoi en cours...';
+  try {
+    const toBase64 = file => new Promise(res => { const r = new FileReader(); r.onload = e => res(e.target.result); r.readAsDataURL(file); });
+    const photos = await Promise.all(demandeFiles.map(toBase64));
+    await emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_ID, {
+      nom_client: nom, phone_client: phone, description: texte,
+      photo_1: photos[0] || '', photo_2: photos[1] || ''
+    });
+    const waMsg = `Bonjour SportKit SN 👋\n\n*Nouvelle demande produit*\n\n👤 Nom : ${nom}\n📱 WhatsApp : ${phone}\n\n📝 Description :\n${texte}${demandeFiles.length ? `\n\n📷 J'ai ${demandeFiles.length} photo(s) à vous envoyer` : ''}`;
+    window.open(`https://wa.me/221774523213?text=${encodeURIComponent(waMsg)}`, '_blank');
+    if (demandeFiles.length) showToast('📷 Envoie tes photos sur WhatsApp !', '#006994');
+    btn.style.display = 'none';
+    document.getElementById('demandeSuccess').style.display = 'block';
+    demandeFiles = [];
+    document.getElementById('demandeNom').value = '';
+    document.getElementById('demandePhone').value = '';
+    document.getElementById('demandeTexte').value = '';
+    document.getElementById('demandePreviews').innerHTML = '';
+    document.getElementById('demandeUploadZone').style.opacity = '1';
+  } catch(err) {
+    console.error(err);
+    showToast('❌ Erreur lors de l\'envoi. Réessaie.', '#ef4444');
+    btn.disabled = false;
+    btn.innerHTML = '<i class="bi bi-send-fill"></i> Envoyer ma demande';
+  }
+};
+
+// NEWSLETTER
+// NEWSLETTER
+document.querySelector('.nl-btn').addEventListener('click', () => {
+  const email = document.querySelector('.nl-input[type="email"]').value.trim();
+  const phone = document.querySelector('.nl-input[type="tel"]').value.trim();
+  if (!email) { showToast('⚠️ Entre ton adresse email', '#f59e0b'); return; }
+  
+  const msg = `📧 *Nouvelle inscription newsletter SportKit SN*\n\n📩 Email : ${email}\n📱 WhatsApp : ${phone || 'Non renseigné'}`;
+  window.open(`https://wa.me/221780141200?text=${encodeURIComponent(msg)}`, '_blank');
+  
+  showToast('✅ Inscription envoyée !', '#22c55e');
+  document.querySelector('.nl-input[type="email"]').value = '';
+  document.querySelector('.nl-input[type="tel"]').value = '';
+});
+
+// FLUIDITÉ
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => observer.observe(el));
+window.addEventListener('scroll', () => {
+  document.querySelector('.navbar').classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+
+// TEMOIGNAGES
+let tIdx=0;
+const tCards=document.querySelectorAll('.temo-card'), tDots=document.querySelectorAll('.temo-dot');
+const ppT=()=>window.innerWidth<768?1:window.innerWidth<1100?2:4;
+const goT=d=>{const pp=ppT(),max=Math.ceil(tCards.length/pp)-1;tIdx=Math.max(0,Math.min(tIdx+d,max));document.getElementById('temoTrack')&&(document.getElementById('temoTrack').style.transform=`translateX(-${tIdx*(100/pp)*pp}%)`);tDots.forEach((dot,i)=>dot.classList.toggle('active',i===tIdx));};
+
+// INIT
+updateBadge(); renderWishlist(); loadProduits();
+
+async function loadPromos() {
+  try {
+    const snap = await db.collection("promos").get();
+    const promos = snap.docs.map(d=>({id:d.id,...d.data()})).filter(p=>p.actif);
+    if(!promos.length) return;
+    const grid = document.getElementById('promoGrid');
+    grid.className = `promo-grid count-${Math.min(promos.length, 3)}`;
+    grid.innerHTML = promos.map(p=>`
+      <div class="promo-card" onclick="window.location.href='${p.lien}'">
+        <div class="promo-card-bg" style="background-image:url('${p.image}')"></div>
+        <div class="promo-card-overlay"></div>
+        <div class="promo-card-content">
+          <div class="promo-discount">🔥 ${p.discount}</div>
+          <div class="promo-card-title">${p.titre}</div>
+          <div class="promo-card-desc">${p.description}</div>
+          <a href="${p.lien}" class="btn-promo" onclick="event.stopPropagation()">
+            Profiter maintenant <i class="bi bi-arrow-right"></i>
+          </a>
+        </div>
+      </div>`).join('');
+  } catch(e) { console.error(e); }
+}
+
+loadPromos();
+</script>
+</body>
+</html>

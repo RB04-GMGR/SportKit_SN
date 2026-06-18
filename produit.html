@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Produit — SportKit SN</title>
+<link rel="icon" type="image/png" href="assets/images/logo1.png">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+/* ── BREADCRUMB ─────────────────────────── */
+.breadcrumb{max-width:1280px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text2);flex-wrap:wrap}
+.breadcrumb a{color:var(--text2);transition:color .15s}.breadcrumb a:hover{color:var(--blue)}
+.breadcrumb i{font-size:10px;color:var(--border)}
+
+/* ── LAYOUT ─────────────────────────────── */
+.produit-wrap{max-width:1280px;margin:0 auto;padding:0 20px 60px}
+.produit-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+
+/* ── GALERIE ─────────────────────────────── */
+.gallery{position:sticky;top:76px}
+.main-media{
+  aspect-ratio:1;border-radius:var(--radius-lg);overflow:hidden;
+  background:var(--bg);border:1.5px solid var(--border);
+  margin-bottom:12px;position:relative;
+}
+.main-media img{width:100%;height:100%;object-fit:cover;transition:transform .4s;display:block}
+.main-media:hover img{transform:scale(1.04)}
+.main-media iframe{width:100%;height:100%;border:none;display:none}
+.media-badge{
+  position:absolute;top:12px;left:12px;
+  background:rgba(0,0,0,0.6);color:#fff;
+  font-size:11px;font-weight:800;
+  padding:4px 10px;border-radius:99px;
+  backdrop-filter:blur(4px);
+  display:none;align-items:center;gap:5px;
+}
+.thumbs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.thumbs::-webkit-scrollbar{display:none}
+.thumb{
+  width:72px;height:72px;border-radius:8px;overflow:hidden;
+  background:var(--bg);border:2px solid var(--border);
+  cursor:pointer;flex-shrink:0;transition:all .15s;
+  position:relative;
+}
+.thumb:hover{border-color:var(--text2)}
+.thumb.active{border-color:var(--blue)}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.thumb.video-thumb{
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#0a0f2e,#1a2a5e);
+}
+.thumb.video-thumb i{font-size:22px;color:#fff}
+.thumb.video-thumb.active{border-color:#FF3B30}
+
+/* ── ZOOM OVERLAY ────────────────────────── */
+.zoom-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.9);
+  z-index:2000;display:none;align-items:center;justify-content:center;
+  cursor:zoom-out;
+}
+.zoom-overlay.open{display:flex}
+.zoom-overlay img{max-width:90vw;max-height:90vh;object-fit:contain;border-radius:8px}
+.zoom-close{position:absolute;top:16px;right:16px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.1);border:none;color:#fff;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+
+/* ── DÉTAIL PRODUIT ──────────────────────── */
+.prod-detail{}
+.prod-cat-label{font-size:11px;font-weight:800;color:var(--blue);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px}
+.prod-name-big{font-size:clamp(22px,4vw,32px);font-weight:900;color:var(--text);line-height:1.2;margin-bottom:10px}
+.prod-rating{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.stars{color:var(--sn-yellow);font-size:14px}
+.rating-txt{font-size:12px;color:var(--text2)}
+
+/* PRIX */
+.price-block{margin-bottom:16px;padding-bottom:16px;border-bottom:1.5px solid var(--border)}
+.price-main-big{font-size:clamp(28px,4vw,40px);font-weight:900;color:var(--blue);line-height:1}
+.price-fcfa-big{font-size:14px;color:var(--text2);font-weight:700;margin-left:4px}
+.price-old-big{font-size:18px;color:var(--text2);text-decoration:line-through;margin-left:8px}
+.price-off-badge{background:#FF3B30;color:#fff;font-size:12px;font-weight:900;padding:3px 10px;border-radius:4px;margin-left:8px}
+.stock-line{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;margin-top:8px}
+.stock-dot{width:8px;height:8px;border-radius:50%}
+
+/* OPTIONS */
+.option-block{margin-bottom:18px}
+.option-title{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--text);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.option-selected{font-size:12px;font-weight:700;color:var(--blue);background:var(--blue-light);padding:2px 8px;border-radius:99px}
+.option-pills{display:flex;flex-wrap:wrap;gap:8px}
+.option-pill{
+  padding:8px 16px;border:1.5px solid var(--border);border-radius:8px;
+  font-size:13px;font-weight:700;cursor:pointer;
+  transition:all .15s;background:var(--white);
+  font-family:'Nunito',sans-serif;color:var(--text);
+  position:relative;
+}
+.option-pill:hover:not(.out-of-stock){border-color:var(--blue);color:var(--blue)}
+.option-pill.selected{border-color:var(--blue);background:var(--blue);color:#fff}
+.option-pill.out-of-stock{
+  opacity:.45;cursor:not-allowed;
+  text-decoration:line-through;
+}
+.option-pill.out-of-stock::after{
+  content:'';position:absolute;
+  top:50%;left:0;right:0;
+  height:1px;background:var(--text2);
+}
+.color-pill{
+  width:36px;height:36px;border-radius:50%;
+  border:3px solid transparent;cursor:pointer;
+  transition:all .15s;position:relative;
+}
+.color-pill.selected{border-color:var(--blue);transform:scale(1.15)}
+.color-pill::after{
+  content:'✓';position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:900;color:#fff;
+  opacity:0;transition:opacity .15s;
+  text-shadow:0 1px 3px rgba(0,0,0,0.5);
+}
+.color-pill.selected::after{opacity:1}
+
+/* QUANTITÉ */
+.qty-block{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+.qty-label{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--text)}
+.qty-ctrl{display:flex;align-items:center;border:1.5px solid var(--border);border-radius:10px;overflow:hidden}
+.qty-btn{
+  width:40px;height:40px;background:var(--bg);border:none;
+  font-size:18px;font-weight:700;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:background .15s;color:var(--text);
+}
+.qty-btn:hover{background:var(--blue-light);color:var(--blue)}
+.qty-btn:disabled{opacity:.3;cursor:not-allowed}
+.qty-num{width:48px;text-align:center;font-size:16px;font-weight:900;color:var(--text)}
+.qty-max{font-size:12px;color:var(--text2)}
+
+/* RÉSUMÉ SÉLECTION */
+.selection-recap{
+  background:var(--blue-light);border:1.5px solid rgba(13,110,253,0.2);
+  border-radius:var(--radius);padding:12px 16px;margin-bottom:20px;
+  display:none;
+}
+.selection-recap.visible{display:block}
+.recap-title{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--blue);margin-bottom:6px}
+.recap-items{display:flex;flex-wrap:wrap;gap:6px}
+.recap-tag{font-size:12px;font-weight:700;background:var(--white);color:var(--text);padding:3px 10px;border-radius:99px;border:1px solid var(--border)}
+
+/* ACTIONS */
+.action-btns-big{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.btn-add-big{
+  flex:1;min-width:180px;background:var(--blue);color:#fff;border:none;
+  border-radius:10px;padding:15px 20px;font-size:15px;font-weight:900;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  font-family:'Nunito',sans-serif;cursor:pointer;transition:all .15s;
+}
+.btn-add-big:hover{background:var(--blue-dark);transform:translateY(-2px);box-shadow:0 6px 20px rgba(13,110,253,.3)}
+.btn-add-big:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-wa-big{
+  flex:1;min-width:180px;background:#25D366;color:#fff;border:none;
+  border-radius:10px;padding:15px 20px;font-size:15px;font-weight:900;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  font-family:'Nunito',sans-serif;cursor:pointer;transition:all .15s;text-decoration:none;
+}
+.btn-wa-big:hover{background:#1eb856}
+.btn-wish-big{
+  width:50px;height:50px;border-radius:10px;
+  background:var(--white);border:1.5px solid var(--border);
+  color:var(--text2);font-size:22px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .15s;flex-shrink:0;
+}
+.btn-wish-big:hover,.btn-wish-big.wished{color:#FF3B30;border-color:#FF3B30;background:#fff0f0}
+
+/* ALERTE OPTIONS */
+.options-alert{
+  background:#fff8e1;border:1.5px solid #F59E0B;border-radius:8px;
+  padding:10px 14px;font-size:13px;font-weight:700;color:#B45309;
+  display:none;align-items:center;gap:8px;margin-bottom:14px;
+}
+.options-alert.show{display:flex}
+
+/* TRUST */
+.trust-strip{display:flex;gap:0;border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:24px}
+.trust-item{flex:1;display:flex;align-items:center;gap:8px;padding:12px 14px;font-size:12px;font-weight:700;color:var(--text2);border-right:1px solid var(--border)}
+.trust-item:last-child{border-right:none}
+.trust-item i{font-size:18px;color:var(--blue);flex-shrink:0}
+
+/* DESCRIPTION TABS */
+.tabs{display:flex;border-bottom:1.5px solid var(--border);margin-bottom:16px;gap:0}
+.tab-btn{padding:10px 20px;font-size:13px;font-weight:800;color:var(--text2);border-bottom:2.5px solid transparent;cursor:pointer;transition:all .15s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Nunito',sans-serif}
+.tab-btn:hover{color:var(--blue)}
+.tab-btn.active{color:var(--blue);border-bottom-color:var(--blue)}
+.tab-content{display:none;font-size:14px;color:var(--text2);line-height:1.8}
+.tab-content.active{display:block}
+.carac-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.carac-item{background:var(--bg);border-radius:8px;padding:10px 14px}
+.carac-key{font-size:11px;font-weight:800;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px}
+.carac-val{font-size:13px;font-weight:700;color:var(--text)}
+
+/* PRODUITS SIMILAIRES */
+.related-section{max-width:1280px;margin:0 auto;padding:0 20px 60px}
+.related-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+
+/* RESPONSIVE */
+@media(max-width:960px){
+  .produit-grid{grid-template-columns:1fr;gap:24px}
+  .gallery{position:static}
+  .related-grid{grid-template-columns:repeat(3,1fr)}
+  .trust-strip{flex-wrap:wrap}
+  .trust-item{border-right:none;border-bottom:1px solid var(--border);flex:1 1 40%}
+  .trust-item:last-child{border-bottom:none}
+}
+@media(max-width:600px){
+  .action-btns-big{flex-direction:column}
+  .btn-add-big,.btn-wa-big{min-width:unset;width:100%}
+  .btn-wish-big{width:100%;height:44px}
+  .related-grid{grid-template-columns:repeat(2,1fr);gap:8px}
+  .carac-grid{grid-template-columns:1fr}
+  .trust-strip{flex-direction:column}
+  .trust-item{flex:1 1 100%}
+}
+</style>
+</head>
+<body>
+<div class="splash" id="splash">
+  <img src="assets/images/logo1.png" alt="SportKit SN" class="splash-logo">
+  <div class="splash-bar"><div class="splash-fill"></div></div>
+</div>
+
+<div class="ticker-bar"><div class="ticker-track">
+  <span class="ticker-item"><i class="bi bi-truck-fill"></i> Livraison rapide partout au Sénégal</span>
+  <span class="ticker-item"><i class="bi bi-shield-check-fill"></i> Paiement 100% sécurisé</span>
+  <span class="ticker-item"><i class="bi bi-arrow-counterclockwise"></i> Retour sous 7 jours</span>
+  <span class="ticker-item"><i class="bi bi-truck-fill"></i> Livraison rapide partout au Sénégal</span>
+  <span class="ticker-item"><i class="bi bi-shield-check-fill"></i> Paiement 100% sécurisé</span>
+  <span class="ticker-item"><i class="bi bi-arrow-counterclockwise"></i> Retour sous 7 jours</span>
+</div></div>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html"><img src="assets/images/logonav1.png" alt="SportKit SN" class="navbar-logo"></a>
+    <div class="navbar-search">
+      <input type="text" placeholder="Rechercher un produit..." id="searchInput">
+      <button class="search-btn"><i class="bi bi-search"></i></button>
+    </div>
+    <div class="navbar-right">
+      <a href="produits.html" class="nav-link"><i class="bi bi-grid-3x3-gap-fill"></i> Produits</a>
+      <button class="nav-cart-btn" id="cartBtn"><i class="bi bi-cart3"></i><span class="cart-badge" id="cartBadge">0</span></button>
+      <button class="nav-cart-btn" id="searchMobileBtn" style="display:none"><i class="bi bi-search"></i></button>
+      <button class="hamburger" id="menuBtn"><i class="bi bi-list"></i></button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-search-bar" id="mobileSearchBar">
+  <div style="position:relative">
+    <input type="text" placeholder="Rechercher..." id="searchMobile"
+      style="width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:10px 44px 10px 16px;font-family:'Nunito',sans-serif;font-size:14px;outline:none;color:var(--text)">
+    <button class="search-btn" style="border-radius:0 8px 8px 0"><i class="bi bi-search"></i></button>
+  </div>
+</div>
+
+<div class="mobile-drawer" id="mobileDrawer">
+  <div class="drawer-head"><img src="assets/images/logo1.png" class="drawer-logo"><button class="drawer-close" id="drawerClose"><i class="bi bi-x-lg"></i></button></div>
+  <div class="drawer-body">
+    <a href="index.html" class="drawer-link"><i class="bi bi-house-fill"></i> Accueil</a>
+    <a href="produits.html" class="drawer-link"><i class="bi bi-grid-3x3-gap-fill"></i> Catalogue</a>
+    <a href="panier.html" class="drawer-link"><i class="bi bi-cart3"></i> Mon panier</a>
+    <a href="contact.html" class="drawer-link"><i class="bi bi-chat-dots-fill"></i> Contact</a>
+    <div class="drawer-sep"></div>
+    <a href="https://wa.me/221774523213" class="drawer-wa"><i class="bi bi-whatsapp"></i> Commander via WhatsApp</a>
+  </div>
+</div>
+
+<div class="cart-overlay" id="cartOverlay"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-head"><div class="cart-title-txt">Mon Panier 🛒</div><button class="cart-close-x" id="cartClose"><i class="bi bi-x-lg"></i></button></div>
+  <div class="cart-body-scroll" id="cartBody"><div class="cart-empty-msg"><i class="bi bi-cart3"></i><div style="font-size:15px;font-weight:800">Panier vide</div></div></div>
+  <div class="cart-foot">
+    <div class="cart-total-row"><span class="cart-total-lbl">Total</span><div><span class="cart-total-val" id="cartTotal">0</span><span style="font-size:13px;color:var(--text2);margin-left:4px">FCFA</span></div></div>
+    <a href="panier.html" class="btn-go-cart"><i class="bi bi-bag-check-fill"></i> Voir mon panier</a>
+    <a href="https://wa.me/2214523213" target="_blank" class="btn-go-wa"><i class="bi bi-whatsapp"></i> Commander via WhatsApp</a>
+  </div>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <a href="index.html">Accueil</a>
+  <i class="bi bi-chevron-right"></i>
+  <a href="produits.html">Produits</a>
+  <i class="bi bi-chevron-right"></i>
+  <span id="breadCat" style="color:var(--text2)">...</span>
+  <i class="bi bi-chevron-right"></i>
+  <span id="breadName" style="color:var(--text);font-weight:700">Chargement...</span>
+</div>
+
+<!-- PRODUIT -->
+<div class="produit-wrap">
+  <div class="produit-grid" id="produitGrid">
+    <!-- Skeleton -->
+    <div>
+      <div class="sk" style="aspect-ratio:1;border-radius:var(--radius-lg);margin-bottom:12px"></div>
+      <div style="display:flex;gap:8px">
+        <div class="sk" style="width:72px;height:72px;border-radius:8px"></div>
+        <div class="sk" style="width:72px;height:72px;border-radius:8px"></div>
+        <div class="sk" style="width:72px;height:72px;border-radius:8px"></div>
+      </div>
+    </div>
+    <div>
+      <div class="sk sk-line" style="width:40%;height:12px;margin-bottom:12px"></div>
+      <div class="sk sk-line" style="width:80%;height:28px;margin-bottom:12px"></div>
+      <div class="sk sk-line" style="width:30%;height:40px;margin-bottom:20px"></div>
+      <div class="sk sk-line" style="width:100%;height:120px;margin-bottom:20px"></div>
+      <div class="sk sk-line" style="width:100%;height:52px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUITS SIMILAIRES -->
+<div class="related-section">
+  <h2 style="font-size:20px;font-weight:900;margin-bottom:16px">Tu pourrais aussi aimer <span style="color:var(--blue)">❤️</span></h2>
+  <div class="related-grid" id="relatedGrid">
+    <div class="sk-card"><div class="sk sk-img"></div><div class="sk-pad"><div class="sk sk-line" style="width:70%"></div><div class="sk sk-btn-line"></div></div></div>
+    <div class="sk-card"><div class="sk sk-img"></div><div class="sk-pad"><div class="sk sk-line" style="width:70%"></div><div class="sk sk-btn-line"></div></div></div>
+    <div class="sk-card"><div class="sk sk-img"></div><div class="sk-pad"><div class="sk sk-line" style="width:70%"></div><div class="sk sk-btn-line"></div></div></div>
+    <div class="sk-card"><div class="sk sk-img"></div><div class="sk-pad"><div class="sk sk-line" style="width:70%"></div><div class="sk sk-btn-line"></div></div></div>
+    <div class="sk-card"><div class="sk sk-img"></div><div class="sk-pad"><div class="sk sk-line" style="width:70%"></div><div class="sk sk-btn-line"></div></div></div>
+  </div>
+</div>
+
+<!-- ZOOM OVERLAY -->
+<div class="zoom-overlay" id="zoomOverlay">
+  <button class="zoom-close" onclick="closeZoom()"><i class="bi bi-x-lg"></i></button>
+  <img id="zoomImg" src="" alt="Zoom">
+</div>
+
+<a href="https://wa.me/221XXXXXXXX" target="_blank" class="wa-float"><i class="bi bi-whatsapp"></i></a>
+<div class="toast-stack" id="toastStack"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const app = initializeApp({ apiKey:"AIzaSyDQo0JvBPuJlrC4zeynhU1_sb0he5rKtFc", authDomain:"sportkit-sn.firebaseapp.com", projectId:"sportkit-sn", storageBucket:"sportkit-sn.firebasestorage.app", messagingSenderId:"619214960191", appId:"1:619214960191:web:442eda9bfac65fb5c8ea8a" });
+const db = getFirestore(app);
+
+// ── Splash ─────────────────────────────────
+window.addEventListener('load', () => {
+  if (sessionStorage.getItem('splashShown')) document.getElementById('splash').classList.add('gone');
+  else { sessionStorage.setItem('splashShown','1'); setTimeout(()=>document.getElementById('splash').classList.add('gone'),1400); }
+});
+
+// ── Navbar ──────────────────────────────────
+document.getElementById('menuBtn').onclick = () => document.getElementById('mobileDrawer').classList.add('open');
+document.getElementById('drawerClose').onclick = () => document.getElementById('mobileDrawer').classList.remove('open');
+document.getElementById('searchMobileBtn').onclick = () => document.getElementById('mobileSearchBar').classList.toggle('open');
+
+// ── Cart ────────────────────────────────────
+const cartBtn=document.getElementById('cartBtn'), cartClose=document.getElementById('cartClose'), cartOverlay=document.getElementById('cartOverlay'), cartSidebar=document.getElementById('cartSidebar');
+const openCart=()=>{cartSidebar.classList.add('open');cartOverlay.classList.add('open');document.body.style.overflow='hidden';renderCart();};
+const closeCartFn=()=>{cartSidebar.classList.remove('open');cartOverlay.classList.remove('open');document.body.style.overflow='';};
+cartBtn.onclick=openCart; cartClose.onclick=closeCartFn; cartOverlay.onclick=closeCartFn;
+const getCart=()=>JSON.parse(localStorage.getItem('sportkit_cart')||'[]');
+const saveCart=c=>{localStorage.setItem('sportkit_cart',JSON.stringify(c));updateBadge();};
+const updateBadge=()=>{document.getElementById('cartBadge').textContent=getCart().reduce((s,i)=>s+i.qty,0);};
+window.changeQty=(id,d)=>{const c=getCart();const i=c.findIndex(x=>x.id===id);if(i>-1){c[i].qty+=d;if(c[i].qty<=0)c.splice(i,1);}saveCart(c);renderCart();};
+window.removeItem=id=>{saveCart(getCart().filter(x=>x.id!==id));renderCart();};
+function renderCart(){
+  const c=getCart(),body=document.getElementById('cartBody'),tot=document.getElementById('cartTotal');
+  if(!c.length){body.innerHTML='<div class="cart-empty-msg"><i class="bi bi-cart3"></i><div style="font-size:15px;font-weight:800">Panier vide</div></div>';tot.textContent='0';return;}
+  let total=0;
+  body.innerHTML=c.map(it=>{total+=it.prix*it.qty;return`<div class="citem"><img src="${it.image||'https://via.placeholder.com/64'}" class="citem-img" alt="${it.nom}"><div style="flex:1"><div class="citem-name">${it.nom}${it.options?`<div style="font-size:11px;color:var(--text2)">${it.options}</div>`:''}</div><div class="citem-price">${it.prix.toLocaleString()} FCFA</div><div class="citem-qty"><button class="qbtn" onclick="changeQty('${it.cartId}',-1)">−</button><span class="qnum">${it.qty}</span><button class="qbtn" onclick="changeQty('${it.cartId}',1)">+</button><button class="qbtn" onclick="removeItem('${it.cartId}')" style="color:#FF3B30"><i class="bi bi-trash3"></i></button></div></div></div>`;}).join('');
+  tot.textContent=total.toLocaleString();
+}
+
+function showToast(msg,color='#22c55e'){
+  const s=document.getElementById('toastStack'),t=document.createElement('div');
+  t.className='tst';t.innerHTML=`<div class="tst-dot" style="background:${color}"></div><span>${msg}</span>`;
+  s.appendChild(t);requestAnimationFrame(()=>t.classList.add('show'));
+  setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),400);},3000);
+}
+
+// ── Wishlist ─────────────────────────────────
+const getWish=()=>JSON.parse(localStorage.getItem('sportkit_wish')||'[]');
+const saveWish=w=>localStorage.setItem('sportkit_wish',JSON.stringify(w));
+
+// ── ÉTAT SÉLECTION ───────────────────────────
+let currentProduct = null;
+let selectedOptions = {};   // { taille: 'M', couleur: 'Noir', ... }
+let qty = 1;
+
+// ── CHARGEMENT PRODUIT ───────────────────────
+async function loadProduct() {
+  const id = new URLSearchParams(window.location.search).get('id');
+  if (!id) { showError('Produit introuvable'); return; }
+  try {
+    const snap = await getDoc(doc(db,'produits',id));
+    if (!snap.exists()) { showError('Produit introuvable'); return; }
+    currentProduct = { id: snap.id, ...snap.data() };
+    renderProduct(currentProduct);
+    loadRelated(currentProduct.categorie, id);
+  } catch(e) { showError('Erreur de connexion'); }
+}
+
+function showError(msg) {
+  document.getElementById('produitGrid').innerHTML = `
+    <div style="grid-column:1/-1;text-align:center;padding:80px 20px;color:var(--text2)">
+      <i class="bi bi-exclamation-circle" style="font-size:48px;display:block;margin-bottom:12px;opacity:.3"></i>
+      <div style="font-size:18px;font-weight:800;margin-bottom:8px">${msg}</div>
+      <a href="produits.html" class="btn-voir" style="display:inline-flex;margin:0 auto">← Retour au catalogue</a>
+    </div>`;
+}
+
+function renderProduct(p) {
+  document.title = p.nom + ' — SportKit SN';
+  document.getElementById('breadCat').textContent = p.categorie || '';
+  document.getElementById('breadName').textContent = p.nom;
+
+  const hp = p.comparePrice && p.comparePrice > p.prix;
+  const r  = hp ? Math.round((1 - p.prix/p.comparePrice)*100) : 0;
+  const inW = getWish().some(x=>x.id===p.id);
+
+  // Toutes les médias : images + vidéo à la fin
+  const images = p.images?.length ? p.images : (p.image ? [p.image] : ['https://via.placeholder.com/600/F5F6FA/0D6EFD?text=SportKit']);
+  const hasVideo = !!p.video;
+
+  document.getElementById('produitGrid').innerHTML = `
+    <!-- GALERIE -->
+    <div class="gallery">
+      <div class="main-media" id="mainMedia">
+        <img src="${images[0]}" alt="${p.nom}" id="mainImg" onclick="openZoom('${images[0]}')" style="cursor:zoom-in">
+        <iframe id="mainVideo" style="display:none" allowfullscreen></iframe>
+        <div class="media-badge" id="mediaBadge"><i class="bi bi-play-fill"></i> Vidéo</div>
+      </div>
+      <div class="thumbs" id="thumbsRow">
+        ${images.map((img,i)=>`
+          <div class="thumb ${i===0?'active':''}" onclick="showMedia('img','${img}',this)" data-type="img">
+            <img src="${img}" alt="Photo ${i+1}" loading="lazy">
+          </div>`).join('')}
+        ${hasVideo?`
+          <div class="thumb video-thumb" onclick="showMedia('video','${p.video}',this)" data-type="video" title="Voir la vidéo">
+            <i class="bi bi-play-circle-fill"></i>
+          </div>`:''
+        }
+      </div>
+    </div>
+
+    <!-- DÉTAIL -->
+    <div class="prod-detail">
+      <div class="prod-cat-label">${p.categorie||''}</div>
+      <h1 class="prod-name-big">${p.nom}</h1>
+      <div class="prod-rating">
+        <span class="stars">★★★★★</span>
+        <span class="rating-txt">5/5 · Avis clients</span>
+        ${p.marque?`<span style="font-size:12px;color:var(--text2);margin-left:4px">· ${p.marque}</span>`:''}
+      </div>
+
+      <!-- PRIX -->
+      <div class="price-block">
+        <div style="display:flex;align-items:baseline;flex-wrap:wrap;gap:4px">
+          <span class="price-main-big">${(p.prix||0).toLocaleString()}</span>
+          <span class="price-fcfa-big">FCFA</span>
+          ${hp?`<span class="price-old-big">${p.comparePrice.toLocaleString()} FCFA</span><span class="price-off-badge">-${r}%</span>`:''}
+        </div>
+        <div class="stock-line">
+          ${p.stock>0
+            ?`<div class="stock-dot" style="background:var(--sn-green)"></div>
+              <span style="color:var(--sn-green)">${p.stock<=3?`Plus que ${p.stock} en stock !`:`En stock (${p.stock} disponibles)`}</span>`
+            :`<div class="stock-dot" style="background:#FF3B30"></div>
+              <span style="color:#FF3B30">Rupture de stock</span>`
+          }
+        </div>
+      </div>
+
+      <!-- OPTIONS DYNAMIQUES -->
+      ${buildOptions(p)}
+
+      <!-- ALERTE OPTIONS -->
+      <div class="options-alert" id="optionsAlert">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <span id="alertText">Veuillez choisir toutes les options avant d'ajouter au panier</span>
+      </div>
+
+      <!-- RÉCAP SÉLECTION -->
+      <div class="selection-recap" id="selectionRecap">
+        <div class="recap-title">Ta sélection</div>
+        <div class="recap-items" id="recapItems"></div>
+      </div>
+
+      <!-- QUANTITÉ -->
+      <div class="qty-block">
+        <span class="qty-label">Quantité</span>
+        <div class="qty-ctrl">
+          <button class="qty-btn" id="qtyMinus" onclick="updateQty(-1)">−</button>
+          <span class="qty-num" id="qtyDisplay">1</span>
+          <button class="qty-btn" id="qtyPlus" onclick="updateQty(1)">+</button>
+        </div>
+        <span class="qty-max">Max : ${p.stock||0}</span>
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="action-btns-big">
+        <button class="btn-add-big" id="addCartBtn" onclick="addToCartWithOptions()" ${!p.stock?'disabled':''}>
+          <i class="bi bi-cart3"></i>
+          ${p.stock?'Ajouter au panier':'Rupture de stock'}
+        </button>
+        <a href="#" id="waOrderBtn" target="_blank" class="btn-wa-big">
+          <i class="bi bi-whatsapp"></i> Commander via WhatsApp
+        </a>
+        <button class="btn-wish-big ${inW?'wished':''}" id="wishBtn" onclick="toggleWishBtn()">
+          <i class="bi bi-heart${inW?'-fill':''}"></i>
+        </button>
+      </div>
+
+      <!-- TRUST -->
+      <div class="trust-strip">
+        <div class="trust-item"><i class="bi bi-truck-fill"></i><span>Livraison 24-48h</span></div>
+        <div class="trust-item"><i class="bi bi-shield-check-fill"></i><span>Qualité garantie</span></div>
+        <div class="trust-item"><i class="bi bi-arrow-counterclockwise"></i><span>Retour 7 jours</span></div>
+        <div class="trust-item"><i class="bi bi-whatsapp" style="color:#25D366"></i><span>Support WhatsApp</span></div>
+      </div>
+
+      <!-- TABS -->
+      <div class="tabs">
+        <button class="tab-btn active" onclick="showTab('desc',this)">Description</button>
+        ${p.sizes?.length||p.colors?.length?'<button class="tab-btn" onclick="showTab(\'carac\',this)">Caractéristiques</button>':''}
+        <button class="tab-btn" onclick="showTab('livraison',this)">Livraison</button>
+      </div>
+      <div class="tab-content active" id="tab-desc">
+        ${p.description||'Équipement sportif de qualité, sélectionné par SportKit SN pour les sportifs sénégalais.'}
+      </div>
+      <div class="tab-content" id="tab-carac">
+        <div class="carac-grid">
+          ${p.marque?`<div class="carac-item"><div class="carac-key">Marque</div><div class="carac-val">${p.marque}</div></div>`:''}
+          ${p.categorie?`<div class="carac-item"><div class="carac-key">Catégorie</div><div class="carac-val">${p.categorie}</div></div>`:''}
+          ${p.sizes?.length?`<div class="carac-item"><div class="carac-key">Tailles disponibles</div><div class="carac-val">${p.sizes.join(' · ')}</div></div>`:''}
+          ${p.colors?.length?`<div class="carac-item"><div class="carac-key">Couleurs disponibles</div><div class="carac-val">${p.colors.join(' · ')}</div></div>`:''}
+          <div class="carac-item"><div class="carac-key">Stock</div><div class="carac-val">${p.stock||0} unités</div></div>
+        </div>
+      </div>
+      <div class="tab-content" id="tab-livraison">
+        <div class="carac-grid">
+          <div class="carac-item"><div class="carac-key">Dakar</div><div class="carac-val">24h</div></div>
+          <div class="carac-item"><div class="carac-key">Autres villes</div><div class="carac-val">24-48h</div></div>
+          <div class="carac-item"><div class="carac-key">Paiement</div><div class="carac-val">Wave · Orange Money · Livraison</div></div>
+          <div class="carac-item"><div class="carac-key">Retour</div><div class="carac-val">7 jours</div></div>
+        </div>
+      </div>
+    </div>`;
+
+  // Initialiser le bouton WhatsApp
+  updateWALink();
+  updateBadge();
+}
+
+// ── OPTIONS BUILDER ──────────────────────────
+function buildOptions(p) {
+  let html = '';
+
+  if (p.sizes?.length) {
+    html += `
+      <div class="option-block">
+        <div class="option-title">
+          Taille
+          <span class="option-selected" id="sel-taille" style="display:none"></span>
+        </div>
+        <div class="option-pills">
+          ${p.sizes.map(s=>`
+            <button class="option-pill" onclick="selectOption('taille','${s}',this)">
+              ${s}
+            </button>`).join('')}
+        </div>
+      </div>`;
+  }
+
+  if (p.colors?.length) {
+    const colorMap = {
+      'Noir':'#111827','Blanc':'#F5F6FA','Rouge':'#DC2626','Bleu':'#1D4ED8',
+      'Vert':'#16A34A','Jaune':'#EAB308','Orange':'#F97316','Rose':'#EC4899',
+      'Violet':'#7C3AED','Gris':'#6B7280','Marine':'#1E3A5F','Marron':'#92400E'
+    };
+    const useColorPills = p.colors.some(c => colorMap[c]);
+    if (p.styles?.length) {
+  html += `
+    <div class="option-block">
+      <div class="option-title">
+        Style
+        <span class="option-selected" id="sel-style" style="display:none"></span>
+      </div>
+      <div class="option-pills">
+        ${p.styles.map((s,i)=>`
+          <button class="option-pill" onclick="selectOption('style','${s}',this);showMedia('img','${(p.images||[])[i]||p.image}',document.querySelectorAll('.thumb')[${i}])">
+            ${s}
+          </button>`).join('')}
+      </div>
+    </div>`;
+}
+    if (useColorPills) {
+      html += `
+        <div class="option-block">
+          <div class="option-title">
+            Couleur
+            <span class="option-selected" id="sel-couleur" style="display:none"></span>
+          </div>
+          <div class="option-pills" style="gap:10px">
+            ${p.colors.map(c=>`
+              <div class="color-pill"
+                style="background:${colorMap[c]||'#ccc'};box-shadow:inset 0 0 0 1px rgba(0,0,0,0.1)"
+                onclick="selectOption('couleur','${c}',this)"
+                title="${c}">
+              </div>`).join('')}
+          </div>
+        </div>`;
+    } else {
+      html += `
+        <div class="option-block">
+          <div class="option-title">
+            Couleur
+            <span class="option-selected" id="sel-couleur" style="display:none"></span>
+          </div>
+          <div class="option-pills">
+            ${p.colors.map(c=>`
+              <button class="option-pill" onclick="selectOption('couleur','${c}',this)">
+                ${c}
+              </button>`).join('')}
+          </div>
+        </div>`;
+    }
+  }
+
+  return html;
+}
+
+// ── SÉLECTION OPTIONS ─────────────────────────
+window.selectOption = (type, value, el) => {
+  // Désélectionner les autres dans le même groupe
+  const parent = el.closest('.option-pills');
+  parent.querySelectorAll('.option-pill,.color-pill').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+
+  selectedOptions[type] = value;
+
+  // Afficher le label sélectionné
+  const badge = document.getElementById(`sel-${type}`);
+  if (badge) { badge.textContent = value; badge.style.display='inline-flex'; }
+
+  updateRecap();
+  updateWALink();
+  document.getElementById('optionsAlert')?.classList.remove('show');
+};
+
+function updateRecap() {
+  const recap = document.getElementById('selectionRecap');
+  const items = document.getElementById('recapItems');
+  if (!recap || !items) return;
+  const keys = Object.keys(selectedOptions);
+  if (!keys.length) { recap.classList.remove('visible'); return; }
+  recap.classList.add('visible');
+  items.innerHTML = keys.map(k =>
+    `<span class="recap-tag">${k.charAt(0).toUpperCase()+k.slice(1)} : <strong>${selectedOptions[k]}</strong></span>`
+  ).join('');
+}
+
+function getRequiredOptions() {
+  if (!currentProduct) return [];
+  const required = [];
+  if (currentProduct.sizes?.length) required.push('taille');
+  if (currentProduct.colors?.length) required.push('couleur');
+  return required;
+}
+
+function allOptionsSelected() {
+  return getRequiredOptions().every(opt => selectedOptions[opt]);
+}
+
+// ── QUANTITÉ ──────────────────────────────────
+window.updateQty = d => {
+  qty = Math.max(1, Math.min(qty+d, currentProduct?.stock||99));
+  document.getElementById('qtyDisplay').textContent = qty;
+  document.getElementById('qtyMinus').disabled = qty <= 1;
+  document.getElementById('qtyPlus').disabled = qty >= (currentProduct?.stock||99);
+  updateWALink();
+};
+
+// ── AJOUTER AU PANIER ─────────────────────────
+window.addToCartWithOptions = () => {
+  if (!currentProduct) return;
+  if (!currentProduct.stock) return;
+
+  // Vérifier options obligatoires
+  if (!allOptionsSelected()) {
+    const alert = document.getElementById('optionsAlert');
+    const missing = getRequiredOptions().filter(o => !selectedOptions[o]);
+    document.getElementById('alertText').textContent = `Veuillez choisir : ${missing.join(', ')}`;
+    alert.classList.add('show');
+    alert.scrollIntoView({ behavior:'smooth', block:'center' });
+    return;
+  }
+
+  const cart = getCart();
+  const optionsStr = Object.entries(selectedOptions).map(([k,v])=>`${k}: ${v}`).join(' · ');
+  const cartId = currentProduct.id + '_' + Object.values(selectedOptions).join('_');
+
+  const idx = cart.findIndex(x => x.cartId === cartId);
+  if (idx > -1) {
+    cart[idx].qty += qty;
+  } else {
+    cart.push({
+      ...currentProduct,
+      cartId,
+      qty,
+      options: optionsStr || null
+    });
+  }
+  saveCart(cart);
+  showToast(`✅ ${qty}× ${currentProduct.nom} ajouté au panier !`, '#22c55e');
+  openCart();
+};
+
+// ── LIEN WHATSAPP ─────────────────────────────
+function updateWALink() {
+  if (!currentProduct) return;
+  const optionsStr = Object.entries(selectedOptions).map(([k,v])=>`${k}: ${v}`).join(', ');
+  const msg = `Bonjour SportKit SN ! 🛒\n\nJe voudrais commander :\n• ${currentProduct.nom}\n${optionsStr?`Options : ${optionsStr}\n`:''}• Quantité : ${qty}\n• Prix : ${(currentProduct.prix*qty).toLocaleString()} FCFA\n\nMerci !`;
+  const waBtn = document.getElementById('waOrderBtn');
+  if (waBtn) waBtn.href = `https://wa.me/221XXXXXXXX?text=${encodeURIComponent(msg)}`;
+}
+
+// ── WISHLIST ──────────────────────────────────
+window.toggleWishBtn = () => {
+  if (!currentProduct) return;
+  const w = getWish(), btn = document.getElementById('wishBtn');
+  const idx = w.findIndex(x=>x.id===currentProduct.id);
+  if (idx>-1) {
+    w.splice(idx,1);
+    btn.innerHTML='<i class="bi bi-heart"></i>';
+    btn.classList.remove('wished');
+    showToast('Retiré de ta sélection','#FF3B30');
+  } else {
+    w.push(currentProduct);
+    btn.innerHTML='<i class="bi bi-heart-fill"></i>';
+    btn.classList.add('wished');
+    showToast('❤️ Ajouté à ta sélection','#FF3B30');
+  }
+  saveWish(w);
+};
+
+// ── GALERIE MÉDIA ─────────────────────────────
+window.showMedia = (type, src, thumb) => {
+  document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+  thumb.classList.add('active');
+
+  const mainImg   = document.getElementById('mainImg');
+  const mainVideo = document.getElementById('mainVideo');
+  const badge     = document.getElementById('mediaBadge');
+
+  if (type === 'img') {
+    mainImg.src = src;
+    mainImg.style.display = 'block';
+    mainVideo.style.display = 'none';
+    mainVideo.src = '';
+    badge.style.display = 'none';
+    mainImg.onclick = () => openZoom(src);
+  } else {
+    mainVideo.src = `https://www.youtube.com/embed/${src}?autoplay=1`;
+    mainVideo.style.display = 'block';
+    mainImg.style.display = 'none';
+    badge.style.display = 'flex';
+    mainImg.onclick = null;
+  }
+};
+
+// ── ZOOM ──────────────────────────────────────
+window.openZoom = src => {
+  document.getElementById('zoomImg').src = src;
+  document.getElementById('zoomOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+};
+window.closeZoom = () => {
+  document.getElementById('zoomOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+};
+document.getElementById('zoomOverlay').onclick = e => { if(e.target===document.getElementById('zoomOverlay')) closeZoom(); };
+
+// ── TABS ──────────────────────────────────────
+window.showTab = (tab, btn) => {
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-'+tab)?.classList.add('active');
+};
+
+// ── PRODUITS SIMILAIRES ───────────────────────
+async function loadRelated(cat, currentId) {
+  try {
+    const snap = await getDocs(collection(db,'produits'));
+    const list = snap.docs.map(d=>({id:d.id,...d.data()}))
+      .filter(p=>p.categorie===cat&&p.id!==currentId)
+      .slice(0,5);
+    const grid = document.getElementById('relatedGrid');
+    if (!list.length) { grid.innerHTML = '<div style="color:var(--text2);font-size:13px;grid-column:1/-1">Aucun produit similaire pour l\'instant</div>'; return; }
+    grid.innerHTML = list.map(p => {
+      const sp = JSON.stringify(p).replace(/"/g,'&quot;');
+      return `
+        <div class="prod-card" onclick="window.location.href='produit.html?id=${p.id}'">
+          <div class="prod-img-wrap">
+            <img src="${p.image||'https://via.placeholder.com/400'}" alt="${p.nom}" loading="lazy">
+            ${p.nouveau?'<div class="prod-badges"><span class="pbadge pbadge-blue">Nouveau</span></div>':''}
+          </div>
+          <div class="prod-body">
+            <div class="prod-name">${p.nom}</div>
+            <div class="prod-price-row">
+              <span class="price-main">${(p.prix||0).toLocaleString()}</span>
+              <span class="price-fcfa">FCFA</span>
+            </div>
+            <div class="prod-actions">
+              <a href="produit.html?id=${p.id}" class="btn-voir" onclick="event.stopPropagation()"><i class="bi bi-eye"></i> Voir</a>
+              <button class="btn-panier" onclick="event.stopPropagation();quickAdd(${sp})" title="Ajouter au panier"><i class="bi bi-bag-plus"></i></button>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+  } catch(e) { console.error(e); }
+}
+
+// Ajout rapide depuis produits similaires (sans options)
+window.quickAdd = p => {
+  const cart = getCart();
+  const idx  = cart.findIndex(x=>x.cartId===p.id||x.id===p.id);
+  if(idx>-1) cart[idx].qty++;
+  else cart.push({...p, cartId:p.id, qty:1});
+  saveCart(cart);
+  showToast('✅ '+p.nom+' ajouté !','#22c55e');
+};
+
+// ── INIT ──────────────────────────────────────
+updateBadge();
+loadProduct();
+</script>
+</body>
+</html>

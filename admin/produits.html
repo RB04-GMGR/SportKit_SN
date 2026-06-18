@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Produits — SportKit SN Admin</title>
+<link rel="icon" type="image/png" href="../assets/images/logo.png">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+:root{--blue:#0D6EFD;--blue-dark:#0952c6;--blue-light:#E8F1FF;--bg:#F5F6FA;--white:#fff;--text:#111827;--text2:#6B7280;--border:#E5E7EB;--sidebar:#0a0f2e;--radius:10px;--shadow:0 2px 10px rgba(0,0,0,0.07);--shadow-lg:0 8px 32px rgba(0,0,0,0.12)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:'Nunito',sans-serif;border:none}
+.sidebar{width:240px;background:var(--sidebar);min-height:100vh;display:flex;flex-direction:column;flex-shrink:0;position:fixed;top:0;left:0;bottom:0;z-index:100;transition:transform .3s}
+.sidebar-logo{padding:20px 20px 16px;border-bottom:1px solid rgba(255,255,255,0.06)}
+.sidebar-logo img{height:36px}
+.sidebar-logo-sub{font-size:10px;font-weight:700;color:rgba(255,255,255,0.3);letter-spacing:2px;text-transform:uppercase;margin-top:6px}
+.sidebar-nav{flex:1;padding:16px 12px;overflow-y:auto}
+.nav-section-title{font-size:10px;font-weight:800;color:rgba(255,255,255,0.25);letter-spacing:2px;text-transform:uppercase;padding:12px 8px 6px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:700;color:rgba(255,255,255,0.55);cursor:pointer;transition:all .15s;margin-bottom:2px;text-decoration:none}
+.nav-item:hover{background:rgba(255,255,255,0.06);color:#fff}
+.nav-item.active{background:var(--blue);color:#fff}
+.nav-item i{font-size:16px;width:18px;text-align:center;flex-shrink:0}
+.sidebar-bottom{padding:16px 12px;border-top:1px solid rgba(255,255,255,0.06)}
+.btn-logout{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:700;color:rgba(255,255,255,0.55);cursor:pointer;transition:all .15s;width:100%;background:none;border:none}
+.btn-logout:hover{background:rgba(239,68,68,0.15);color:#FF3B30}
+.main{flex:1;margin-left:240px;display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:var(--white);border-bottom:1.5px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow);position:sticky;top:0;z-index:50}
+.topbar-left{display:flex;align-items:center;gap:12px}
+.sidebar-toggle{display:none;width:36px;height:36px;border-radius:8px;background:var(--bg);border:1.5px solid var(--border);align-items:center;justify-content:center;font-size:18px;color:var(--text)}
+.page-title{font-size:16px;font-weight:900}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.topbar-site-btn{display:flex;align-items:center;gap:6px;background:var(--blue-light);color:var(--blue);border:1.5px solid var(--blue);border-radius:8px;padding:7px 14px;font-size:12px;font-weight:800;cursor:pointer;transition:all .15s;text-decoration:none}
+.topbar-site-btn:hover{background:var(--blue);color:#fff}
+.content{padding:24px;flex:1}
+.btn-primary{background:var(--blue);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:14px;font-weight:800;cursor:pointer;transition:all .15s;font-family:'Nunito',sans-serif;display:inline-flex;align-items:center;gap:6px}
+.btn-primary:hover{background:var(--blue-dark)}
+.btn-secondary{background:var(--bg);color:var(--text2);border:1.5px solid var(--border);border-radius:8px;padding:10px 20px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif}
+.btn-secondary:hover{border-color:var(--text2);color:var(--text)}
+.form-input{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;font-family:'Nunito',sans-serif;font-size:14px;color:var(--text);outline:none;transition:border-color .15s}
+.form-input:focus{border-color:var(--blue);background:var(--white)}
+.form-input::placeholder{color:#9CA3AF}
+select.form-input{cursor:pointer}
+textarea.form-input{resize:vertical;min-height:80px;line-height:1.6}
+.form-label{display:block;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--text2);margin-bottom:6px}
+.form-group{margin-bottom:14px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.table-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.table-head{display:grid;grid-template-columns:52px 1fr 120px 90px 80px 110px;padding:10px 16px;background:var(--bg);border-bottom:1.5px solid var(--border);font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--text2)}
+.table-row{display:grid;grid-template-columns:52px 1fr 120px 90px 80px 110px;padding:12px 16px;border-bottom:1px solid var(--border);align-items:center;font-size:13px;transition:background .15s}
+.table-row:last-child{border-bottom:none}
+.table-row:hover{background:var(--bg)}
+.prod-thumb{width:44px;height:44px;border-radius:8px;object-fit:cover;background:var(--bg);border:1px solid var(--border)}
+.prod-name-text{font-weight:700;color:var(--text)}
+.prod-sub{font-size:11px;color:var(--text2);margin-top:2px}
+.status{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:800}
+.status-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.s-ok{background:#F0FDF4;color:#166534}.s-ok .status-dot{background:#22c55e}
+.s-low{background:#FFFBEB;color:#B45309}.s-low .status-dot{background:#F59E0B}
+.s-out{background:#FFF0F0;color:#DC2626}.s-out .status-dot{background:#FF3B30}
+.action-btns{display:flex;gap:6px}
+.btn-action{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;border:1.5px solid var(--border);background:var(--white);transition:all .15s}
+.btn-action.edit{color:var(--blue)}.btn-action.edit:hover{background:var(--blue-light);border-color:var(--blue)}
+.btn-action.del{color:#FF3B30}.btn-action.del:hover{background:#fff0f0;border-color:#FF3B30}
+.btn-action.view{color:var(--text2)}.btn-action.view:hover{background:var(--bg)}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--white);border-radius:16px;width:100%;max-width:700px;max-height:92vh;overflow-y:auto;box-shadow:var(--shadow-lg)}
+.modal-head{padding:20px 24px;border-bottom:1.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--white);z-index:1}
+.modal-title{font-size:17px;font-weight:900}
+.modal-close{width:32px;height:32px;border-radius:50%;background:var(--bg);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer}
+.modal-body{padding:24px}
+.modal-footer{padding:16px 24px;border-top:1.5px solid var(--border);display:flex;gap:10px;justify-content:flex-end;position:sticky;bottom:0;background:var(--white)}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.toggle-row:last-child{border-bottom:none}
+.toggle-lbl{font-size:13px;font-weight:700}
+.toggle-sub{font-size:11px;color:var(--text2);margin-top:2px}
+.toggle{position:relative;width:38px;height:20px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;background:#D1D5DB;border-radius:99px;cursor:pointer;transition:all .2s}
+.toggle-slider::before{content:'';position:absolute;left:2px;top:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:all .2s}
+.toggle input:checked+.toggle-slider{background:var(--blue)}
+.toggle input:checked+.toggle-slider::before{transform:translateX(18px)}
+
+/* Images section */
+.img-fields{display:flex;flex-direction:column;gap:8px}
+.img-field-row{display:flex;gap:8px;align-items:center}
+.img-field-row input{flex:1;margin-bottom:0}
+.img-field-num{width:24px;height:24px;border-radius:50%;background:var(--blue);color:#fff;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.img-field-num.main{background:var(--blue)}
+.img-field-num.extra{background:var(--text2)}
+.imgs-preview-wrap{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.img-preview-thumb{position:relative;width:72px;height:72px;border-radius:8px;overflow:hidden;border:1.5px solid var(--border);flex-shrink:0}
+.img-preview-thumb img{width:100%;height:100%;object-fit:cover}
+.img-preview-thumb .main-badge{position:absolute;bottom:2px;left:2px;background:var(--blue);color:#fff;font-size:9px;font-weight:900;padding:1px 5px;border-radius:3px}
+.video-preview{margin-top:10px;border-radius:8px;overflow:hidden;display:none}
+.video-preview iframe{width:100%;height:160px;border:none}
+
+/* Section divider */
+.form-section{background:var(--bg);border-radius:8px;padding:14px;margin-bottom:14px}
+.form-section-title{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--blue);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+
+.empty-state{text-align:center;padding:60px 20px;color:var(--text2)}
+.empty-state i{font-size:48px;display:block;margin-bottom:12px;opacity:.3}
+.toast-stack{position:fixed;bottom:24px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.tst{background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700;box-shadow:var(--shadow-lg);transform:translateX(120%);transition:transform .35s cubic-bezier(.34,1.56,.64,1);pointer-events:all}
+.tst.show{transform:translateX(0)}
+.tst-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}.sidebar-toggle{display:flex}
+  .table-head,.table-row{grid-template-columns:44px 1fr 80px 90px}
+  .th-cat,.td-cat,.th-prix,.td-prix{display:none}
+  .form-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <img src="../assets/images/logo1.png" alt="SportKit SN">
+    <div class="sidebar-logo-sub">Panel Admin</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-title">Principal</div>
+    <a class="nav-item" href="dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a class="nav-item active"><i class="bi bi-box-seam-fill"></i> Produits</a>
+    <a class="nav-item" href="commandes.html"><i class="bi bi-cart-check-fill"></i> Commandes</a>
+    <div class="nav-section-title">Site</div>
+    <a class="nav-item" href="../index.html" target="_blank"><i class="bi bi-box-arrow-up-right"></i> Voir le site</a>
+  </nav>
+  <div class="sidebar-bottom">
+    <button class="btn-logout" onclick="doLogout()"><i class="bi bi-box-arrow-left"></i> Se déconnecter</button>
+  </div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <button class="sidebar-toggle" id="sidebarToggle"><i class="bi bi-list"></i></button>
+      <div class="page-title">Gestion des produits</div>
+    </div>
+    <div class="topbar-right">
+      <a href="../index.html" target="_blank" class="topbar-site-btn"><i class="bi bi-eye-fill"></i> Voir le site</a>
+    </div>
+  </div>
+
+  <div class="content">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <input type="text" class="form-input" id="searchProd" placeholder="🔍 Rechercher..." style="width:200px" oninput="filterProd()">
+        <select class="form-input" id="filterCat" style="width:160px" onchange="filterProd()">
+          <option value="">Toutes catégories</option>
+          <option>Arts martiaux</option><option>Flag football</option><option>Fitness</option>
+          <option>Running</option><option>Football</option><option>Matériels électroniques</option>
+          <option>Vêtements</option><option>Accessoires</option>
+        </select>
+        <select class="form-input" id="filterStock" style="width:140px" onchange="filterProd()">
+          <option value="">Tout le stock</option>
+          <option value="ok">En stock</option>
+          <option value="low">Stock faible</option>
+          <option value="out">Rupture</option>
+        </select>
+      </div>
+      <button class="btn-primary" onclick="openModal()"><i class="bi bi-plus-lg"></i> Ajouter un produit</button>
+    </div>
+
+    <!-- STATS -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
+      <div style="background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);text-align:center">
+        <div style="font-size:24px;font-weight:900" id="st-total">—</div>
+        <div style="font-size:12px;color:var(--text2);font-weight:600">Total produits</div>
+      </div>
+      <div style="background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);text-align:center">
+        <div style="font-size:24px;font-weight:900;color:#22c55e" id="st-ok">—</div>
+        <div style="font-size:12px;color:var(--text2);font-weight:600">En stock</div>
+      </div>
+      <div style="background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);text-align:center">
+        <div style="font-size:24px;font-weight:900;color:#F59E0B" id="st-low">—</div>
+        <div style="font-size:12px;color:var(--text2);font-weight:600">Stock faible</div>
+      </div>
+      <div style="background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);text-align:center">
+        <div style="font-size:24px;font-weight:900;color:#FF3B30" id="st-out">—</div>
+        <div style="font-size:12px;color:var(--text2);font-weight:600">Ruptures</div>
+      </div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-head">
+        <span></span><span>Produit</span>
+        <span class="th-cat">Catégorie</span>
+        <span class="th-prix">Prix</span>
+        <span>Stock</span><span>Actions</span>
+      </div>
+      <div id="tableBody">
+        <div class="empty-state"><i class="bi bi-arrow-repeat" style="animation:spin 1s linear infinite"></i>Chargement...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PRODUIT -->
+<div class="modal-overlay" id="prodModal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title" id="modalTitle">Ajouter un produit</div>
+      <button class="modal-close" onclick="closeModal()"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="editId">
+
+      <!-- INFOS GÉNÉRALES -->
+      <div class="form-section">
+        <div class="form-section-title"><i class="bi bi-info-circle-fill"></i> Informations générales</div>
+        <div class="form-row" style="margin-bottom:14px">
+          <div class="form-group" style="margin-bottom:0">
+            <label class="form-label">Nom du produit *</label>
+            <input type="text" class="form-input" id="pNom" placeholder="Ex: Gants de boxe Pro">
+          </div>
+          <div class="form-group" style="margin-bottom:0">
+            <label class="form-label">Catégorie *</label>
+            <select class="form-input" id="pCat">
+              <option value="">Choisir...</option>
+              <option>Arts martiaux</option><option>Flag football</option>
+              <option>Fitness</option><option>Running</option><option>Football</option>
+              <option>Matériels électroniques</option><option>Vêtements</option><option>Accessoires</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea class="form-input" id="pDesc" placeholder="Décris le produit : matière, usage, avantages..."></textarea>
+        </div>
+        <div class="form-row" style="margin-bottom:14px">
+          <div class="form-group" style="margin-bottom:0">
+            <label class="form-label">Prix de vente (FCFA) *</label>
+            <input type="number" class="form-input" id="pPrix" placeholder="15000" min="0">
+          </div>
+          <div class="form-group" style="margin-bottom:0">
+            <label class="form-label">Prix barré (FCFA)</label>
+            <input type="number" class="form-input" id="pPrixOld" placeholder="20000" min="0">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group" style="margin-bottom:0">
+            <label class="form-label">Stock *</label>
+            <input type="number" class="form-input" id="pStock" placeholder="10" min="0">
+          </div>
+          <div class="form-group" style="margin-bottom:0">
+            <label class="form-label">Marque</label>
+            <input type="text" class="form-input" id="pMarque" placeholder="Ex: Everlast, Nike...">
+          </div>
+        </div>
+      </div>
+
+      <!-- IMAGES -->
+      <div class="form-section">
+        <div class="form-section-title"><i class="bi bi-images"></i> Images du produit (jusqu'à 5)</div>
+        <div style="font-size:12px;color:var(--text2);margin-bottom:12px;background:var(--blue-light);border-radius:6px;padding:10px;border-left:3px solid var(--blue)">
+          <strong>💡 Comment ajouter des images :</strong><br>
+          1. Va sur <a href="https://imgbb.com" target="_blank" style="color:var(--blue);font-weight:800">imgbb.com</a> → Upload ton image<br>
+          2. Copie le lien <strong>"Direct link"</strong> (finit par .jpg ou .png)<br>
+          3. Colle-le dans le champ ci-dessous
+        </div>
+        <div class="img-fields">
+          <div class="img-field-row">
+            <div class="img-field-num main" title="Image principale">1</div>
+            <input type="text" class="form-input img-url" placeholder="Lien image principale * (obligatoire)" oninput="updatePreviews()">
+          </div>
+          <div class="img-field-row">
+            <div class="img-field-num extra" title="Image 2">2</div>
+            <input type="text" class="form-input img-url" placeholder="Lien image 2 (optionnel)" oninput="updatePreviews()">
+          </div>
+          <div class="img-field-row">
+            <div class="img-field-num extra" title="Image 3">3</div>
+            <input type="text" class="form-input img-url" placeholder="Lien image 3 (optionnel)" oninput="updatePreviews()">
+          </div>
+          <div class="img-field-row">
+            <div class="img-field-num extra" title="Image 4">4</div>
+            <input type="text" class="form-input img-url" placeholder="Lien image 4 (optionnel)" oninput="updatePreviews()">
+          </div>
+          <div class="img-field-row">
+            <div class="img-field-num extra" title="Image 5">5</div>
+            <input type="text" class="form-input img-url" placeholder="Lien image 5 (optionnel)" oninput="updatePreviews()">
+          </div>
+        </div>
+        <!-- Aperçu -->
+        <div class="imgs-preview-wrap" id="imgsPreview"></div>
+      </div>
+
+      <div class="form-group" style="margin-top:8px">
+  <label class="form-label">Noms des styles/variantes <span style="font-weight:400;font-size:10px">(dans l'ordre des images)</span></label>
+  <input type="text" class="form-input" id="pStyles"
+    placeholder="Style 1, Style 2, Style 3...">
+  <div style="font-size:11px;color:var(--text2);margin-top:4px">
+    💡 Si tes images montrent des styles différents, nomme-les ici dans le même ordre
+  </div>
+</div>
+
+      <!-- VIDÉO -->
+      <div class="form-section">
+        <div class="form-section-title"><i class="bi bi-play-circle-fill"></i> Vidéo YouTube (optionnel)</div>
+        <div style="font-size:12px;color:var(--text2);margin-bottom:12px;background:#fff8e1;border-radius:6px;padding:10px;border-left:3px solid #F59E0B">
+          <strong>🎬 Comment ajouter une vidéo :</strong><br>
+          1. Upload ta vidéo sur <a href="https://youtube.com" target="_blank" style="color:var(--blue);font-weight:800">YouTube</a><br>
+          2. Tu peux la mettre en <strong>"Non répertoriée"</strong> (visible seulement sur ton site)<br>
+          3. Copie le lien de la vidéo et colle-le ici<br>
+          <span style="color:var(--text2)">Ex: https://www.youtube.com/watch?v=XXXXXXXXX</span>
+        </div>
+        <div class="form-group" style="margin-bottom:8px">
+          <label class="form-label">Lien YouTube</label>
+          <input type="text" class="form-input" id="pVideo"
+            placeholder="https://www.youtube.com/watch?v=..."
+            oninput="updateVideoPreview()">
+        </div>
+        <div class="video-preview" id="videoPreview">
+          <iframe id="videoFrame" allowfullscreen></iframe>
+        </div>
+      </div>
+
+      <!-- VARIANTES -->
+      <div class="form-section">
+        <div class="form-section-title"><i class="bi bi-sliders"></i> Tailles & Couleurs</div>
+        <div class="form-row">
+          <div class="form-group" style="margin-bottom:0">
+            <label class="form-label">Tailles <span style="font-weight:400;font-size:10px">(séparées par des virgules)</span></label>
+            <input type="text" class="form-input" id="pSizes" placeholder="S, M, L, XL ou 10oz, 12oz">
+          </div>
+          <div class="form-group" style="margin-bottom:0">
+            <label class="form-label">Couleurs <span style="font-weight:400;font-size:10px">(séparées par des virgules)</span></label>
+            <input type="text" class="form-input" id="pColors" placeholder="Noir, Bleu, Rouge">
+          </div>
+        </div>
+      </div>
+
+      <!-- OPTIONS -->
+      <div class="form-section">
+        <div class="form-section-title"><i class="bi bi-toggles"></i> Options de publication</div>
+        <div class="toggle-row">
+          <div><div class="toggle-lbl">Produit vedette</div><div class="toggle-sub">Affiché en page d'accueil</div></div>
+          <label class="toggle"><input type="checkbox" id="pVedette"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div><div class="toggle-lbl">Badge "Nouveau"</div><div class="toggle-sub">Visible sur la carte produit</div></div>
+          <label class="toggle"><input type="checkbox" id="pNouveau" checked><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div><div class="toggle-lbl">Publié</div><div class="toggle-sub">Visible sur le site client</div></div>
+          <label class="toggle"><input type="checkbox" id="pPublie" checked><span class="toggle-slider"></span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal()">Annuler</button>
+      <button class="btn-primary" onclick="saveProduit()"><i class="bi bi-check-lg"></i> Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-stack" id="toastStack"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const app = initializeApp({ apiKey:"AIzaSyDQo0JvBPuJlrC4zeynhU1_sb0he5rKtFc", authDomain:"sportkit-sn.firebaseapp.com", projectId:"sportkit-sn", storageBucket:"sportkit-sn.firebasestorage.app", messagingSenderId:"619214960191", appId:"1:619214960191:web:442eda9bfac65fb5c8ea8a" });
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+onAuthStateChanged(auth, user => { if (!user) window.location.href = 'index.html'; });
+window.doLogout = async () => { if(confirm('Se déconnecter ?')) { await signOut(auth); window.location.href='index.html'; } };
+document.getElementById('sidebarToggle').onclick = () => document.getElementById('sidebar').classList.toggle('open');
+
+let allP = [];
+
+async function load() {
+  try {
+    const snap = await getDocs(collection(db,'produits'));
+    allP = snap.docs.map(d => ({id:d.id,...d.data()}));
+    updateStats(); renderTable(allP);
+  } catch(e) {
+    document.getElementById('tableBody').innerHTML = '<div class="empty-state"><i class="bi bi-wifi-off"></i><div>Erreur de connexion</div></div>';
+  }
+}
+
+function updateStats() {
+  document.getElementById('st-total').textContent = allP.length;
+  document.getElementById('st-ok').textContent  = allP.filter(p=>p.stock>3).length;
+  document.getElementById('st-low').textContent = allP.filter(p=>p.stock>0&&p.stock<=3).length;
+  document.getElementById('st-out').textContent = allP.filter(p=>!p.stock||p.stock<=0).length;
+}
+
+function renderTable(list) {
+  if (!list.length) {
+    document.getElementById('tableBody').innerHTML = '<div class="empty-state"><i class="bi bi-box-seam"></i><div style="font-size:15px;font-weight:800;margin-bottom:6px">Aucun produit</div><div style="font-size:13px">Ajoute ton premier produit</div></div>';
+    return;
+  }
+  document.getElementById('tableBody').innerHTML = list.map(p => {
+    const imgCount = (p.images||[p.image].filter(Boolean)).length;
+    const hasVideo = !!p.video;
+    const stockBadge = p.stock > 3
+      ? `<span class="status s-ok"><span class="status-dot"></span>${p.stock}</span>`
+      : p.stock > 0
+        ? `<span class="status s-low"><span class="status-dot"></span>${p.stock}</span>`
+        : `<span class="status s-out"><span class="status-dot"></span>Rupture</span>`;
+    return `
+      <div class="table-row">
+        <img src="${p.image||'https://via.placeholder.com/44/F5F6FA/0D6EFD?text=S'}" class="prod-thumb" alt="${p.nom}"
+          onerror="this.src='https://via.placeholder.com/44/F5F6FA/0D6EFD?text=S'">
+        <div>
+          <div class="prod-name-text">${p.nom}</div>
+          <div class="prod-sub">
+            ${p.marque||''}
+            ${imgCount>1?`<span style="color:var(--blue)">📷 ${imgCount} photos</span>`:''}
+            ${hasVideo?'<span style="color:#FF3B30">🎬 Vidéo</span>':''}
+            ${p.publie===false?'<span style="color:#FF3B30">· Brouillon</span>':''}
+          </div>
+        </div>
+        <div class="td-cat" style="font-size:12px;color:var(--text2)">${p.categorie||'—'}</div>
+        <div class="td-prix" style="font-weight:800;color:var(--blue)">${(p.prix||0).toLocaleString()} F</div>
+        <div>${stockBadge}</div>
+        <div class="action-btns">
+          <button class="btn-action view" onclick="window.open('../produit.html?id=${p.id}','_blank')" title="Voir sur le site"><i class="bi bi-eye-fill"></i></button>
+          <button class="btn-action edit" onclick="editProduit('${p.id}')" title="Modifier"><i class="bi bi-pencil-fill"></i></button>
+          <button class="btn-action del" onclick="deleteProduit('${p.id}','${p.nom.replace(/'/g,'')}')" title="Supprimer"><i class="bi bi-trash3-fill"></i></button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+window.filterProd = () => {
+  const q     = document.getElementById('searchProd').value.toLowerCase();
+  const cat   = document.getElementById('filterCat').value;
+  const stock = document.getElementById('filterStock').value;
+  let list = allP;
+  if(q) list = list.filter(p => p.nom?.toLowerCase().includes(q)||p.categorie?.toLowerCase().includes(q));
+  if(cat) list = list.filter(p => p.categorie===cat);
+  if(stock==='ok')  list = list.filter(p => p.stock>3);
+  if(stock==='low') list = list.filter(p => p.stock>0&&p.stock<=3);
+  if(stock==='out') list = list.filter(p => !p.stock||p.stock<=0);
+  renderTable(list);
+};
+
+// ── Images preview ──────────────────────────
+window.updatePreviews = () => {
+  const inputs  = document.querySelectorAll('.img-url');
+  const preview = document.getElementById('imgsPreview');
+  preview.innerHTML = '';
+  inputs.forEach((inp, i) => {
+    const url = inp.value.trim();
+    if (url) {
+      preview.innerHTML += `
+        <div class="img-preview-thumb">
+          <img src="${url}" onerror="this.parentElement.style.display='none'">
+          ${i===0?'<div class="main-badge">MAIN</div>':''}
+        </div>`;
+    }
+  });
+};
+
+// ── Vidéo preview ───────────────────────────
+window.updateVideoPreview = () => {
+  const url = document.getElementById('pVideo').value.trim();
+  const preview = document.getElementById('videoPreview');
+  const frame   = document.getElementById('videoFrame');
+  if (!url) { preview.style.display='none'; return; }
+  const id = extractYoutubeId(url);
+  if (id) {
+    frame.src = `https://www.youtube.com/embed/${id}`;
+    preview.style.display = 'block';
+  } else {
+    preview.style.display = 'none';
+  }
+};
+
+function extractYoutubeId(url) {
+  const patterns = [
+    /youtube\.com\/watch\?v=([^&]+)/,
+    /youtu\.be\/([^?]+)/,
+    /youtube\.com\/embed\/([^?]+)/
+  ];
+  for (const p of patterns) {
+    const m = url.match(p);
+    if (m) return m[1];
+  }
+  return null;
+}
+
+// ── Modal ───────────────────────────────────
+window.openModal = () => {
+  document.getElementById('modalTitle').textContent = 'Ajouter un produit';
+  document.getElementById('editId').value = '';
+  ['pNom','pDesc','pMarque','pSizes','pColors','pVideo'].forEach(id => document.getElementById(id).value='');
+  ['pPrix','pPrixOld','pStock'].forEach(id => document.getElementById(id).value='');
+  document.getElementById('pCat').value='';
+  document.getElementById('pVedette').checked=false;
+  document.getElementById('pNouveau').checked=true;
+  document.getElementById('pPublie').checked=true;
+  document.querySelectorAll('.img-url').forEach(i => i.value='');
+  document.getElementById('imgsPreview').innerHTML='';
+  document.getElementById('videoPreview').style.display='none';
+  document.getElementById('prodModal').classList.add('open');
+};
+
+window.editProduit = id => {
+  const p = allP.find(x => x.id===id);
+  if (!p) return;
+  document.getElementById('modalTitle').textContent = 'Modifier le produit';
+  document.getElementById('editId').value = id;
+  document.getElementById('pNom').value    = p.nom||'';
+  document.getElementById('pDesc').value   = p.description||'';
+  document.getElementById('pCat').value    = p.categorie||'';
+  document.getElementById('pPrix').value   = p.prix||'';
+  document.getElementById('pPrixOld').value= p.comparePrice||'';
+  document.getElementById('pStock').value  = p.stock||'';
+  document.getElementById('pMarque').value = p.marque||'';
+  document.getElementById('pSizes').value  = (p.sizes||[]).join(', ');
+  document.getElementById('pColors').value = (p.colors||[]).join(', ');
+  document.getElementById('pVideo').value  = p.video||'';
+  document.getElementById('pVedette').checked = !!p.vedette;
+  document.getElementById('pNouveau').checked = !!p.nouveau;
+  document.getElementById('pPublie').checked  = p.publie!==false;
+  document.getElementById('pStyles').value = (p.styles||[]).join(', ');
+
+  // Remplir les images
+  const imgs = p.images?.length ? p.images : (p.image ? [p.image] : []);
+  document.querySelectorAll('.img-url').forEach((inp, i) => { inp.value = imgs[i]||''; });
+  updatePreviews();
+  updateVideoPreview();
+  document.getElementById('prodModal').classList.add('open');
+};
+
+window.saveProduit = async () => {
+  const nom  = document.getElementById('pNom').value.trim();
+  const cat  = document.getElementById('pCat').value;
+  const prix = +document.getElementById('pPrix').value;
+  
+  if (!nom||!cat||!prix) { showToast('Nom, catégorie et prix sont obligatoires','#FF3B30'); return; }
+
+  // Récupérer images
+  const imgInputs = document.querySelectorAll('.img-url');
+  const images = Array.from(imgInputs).map(i=>i.value.trim()).filter(Boolean);
+  if (!images.length) { showToast('Ajoute au moins une image','#FF3B30'); return; }
+
+  // Récupérer vidéo
+  const videoUrl = document.getElementById('pVideo').value.trim();
+  const videoId  = videoUrl ? extractYoutubeId(videoUrl) : null;
+
+  const data = {
+    nom, categorie: cat,
+    description: document.getElementById('pDesc').value.trim(),
+    prix, stock: +document.getElementById('pStock').value||0,
+    comparePrice: +document.getElementById('pPrixOld').value||null,
+    marque: document.getElementById('pMarque').value.trim(),
+    image: images[0],
+    images: images,
+    video: videoId||null,
+    sizes: document.getElementById('pSizes').value.split(',').map(s=>s.trim()).filter(Boolean),
+    colors: document.getElementById('pColors').value.split(',').map(s=>s.trim()).filter(Boolean),
+    vedette: document.getElementById('pVedette').checked,
+    nouveau: document.getElementById('pNouveau').checked,
+    publie: document.getElementById('pPublie').checked,
+    styles: document.getElementById('pStyles').value.split(',').map(s=>s.trim()).filter(Boolean),
+    updatedAt: new Date().toISOString()
+  };
+  
+  const editId = document.getElementById('editId').value;
+  try {
+    if (editId) {
+      await updateDoc(doc(db,'produits',editId), data);
+      const idx = allP.findIndex(x=>x.id===editId);
+      if (idx>-1) allP[idx] = {id:editId,...data};
+      showToast('✅ Produit modifié !','#22c55e');
+    } else {
+      data.createdAt = new Date().toISOString();
+      const ref = await addDoc(collection(db,'produits'), data);
+      allP.unshift({id:ref.id,...data});
+      showToast('✅ Produit ajouté !','#22c55e');
+    }
+    updateStats(); closeModal(); filterProd();
+  } catch(e) { showToast('Erreur : '+e.message,'#FF3B30'); }
+};
+
+window.deleteProduit = async (id, nom) => {
+  if (!confirm(`Supprimer "${nom}" ?`)) return;
+  try {
+    await deleteDoc(doc(db,'produits',id));
+    allP = allP.filter(x=>x.id!==id);
+    updateStats(); filterProd();
+    showToast('Produit supprimé','#FF3B30');
+  } catch(e) { showToast('Erreur : '+e.message,'#FF3B30'); }
+};
+
+window.closeModal = () => {
+  document.getElementById('prodModal').classList.remove('open');
+  document.getElementById('videoPreview').style.display='none';
+};
+document.getElementById('prodModal').addEventListener('click', e => { if(e.target===document.getElementById('prodModal')) closeModal(); });
+
+function showToast(msg, color='#22c55e') {
+  const s=document.getElementById('toastStack'), t=document.createElement('div');
+  t.className='tst'; t.innerHTML=`<div class="tst-dot" style="background:${color}"></div><span>${msg}</span>`;
+  s.appendChild(t); requestAnimationFrame(()=>t.classList.add('show'));
+  setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),400);},3000);
+}
+
+// Auto-ouvrir le modal si ?edit=ID dans l'URL
+const editParam = new URLSearchParams(window.location.search).get('edit');
+if (editParam) {
+  // Attendre que les produits soient chargés puis ouvrir
+  const waitAndEdit = setInterval(() => {
+    if (allP.length) {
+      clearInterval(waitAndEdit);
+      editProduit(editParam);
+    }
+  }, 200);
+}
+load();
+</script>
+</body>
+</html>

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Commandes — SportKit SN Admin</title>
+<link rel="icon" type="image/png" href="../assets/images/logo1.png">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+:root{--blue:#006994;--blue-dark:#006994;--blue-light:#E8F1FF;--bg:#F5F6FA;--white:#fff;--text:#111827;--text2:#6B7280;--border:#E5E7EB;--sidebar:#0a0f2e;--radius:10px;--shadow:0 2px 10px rgba(0,0,0,0.07);--shadow-lg:0 8px 32px rgba(0,0,0,0.12)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:'Nunito',sans-serif;border:none}
+.sidebar{width:240px;background:var(--sidebar);min-height:100vh;display:flex;flex-direction:column;flex-shrink:0;position:fixed;top:0;left:0;bottom:0;z-index:100;transition:transform .3s}
+.sidebar-logo{padding:20px 20px 16px;border-bottom:1px solid rgba(255,255,255,0.06)}
+.sidebar-logo img{height:36px}
+.sidebar-logo-sub{font-size:10px;font-weight:700;color:rgba(255,255,255,0.3);letter-spacing:2px;text-transform:uppercase;margin-top:6px}
+.sidebar-nav{flex:1;padding:16px 12px;overflow-y:auto}
+.nav-section-title{font-size:10px;font-weight:800;color:rgba(255,255,255,0.25);letter-spacing:2px;text-transform:uppercase;padding:12px 8px 6px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:700;color:rgba(255,255,255,0.55);cursor:pointer;transition:all .15s;margin-bottom:2px;text-decoration:none}
+.nav-item:hover{background:rgba(255,255,255,0.06);color:#fff}
+.nav-item.active{background:var(--blue);color:#fff}
+.nav-item i{font-size:16px;width:18px;text-align:center;flex-shrink:0}
+.sidebar-bottom{padding:16px 12px;border-top:1px solid rgba(255,255,255,0.06)}
+.btn-logout{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:700;color:rgba(255,255,255,0.55);cursor:pointer;transition:all .15s;width:100%;background:none;border:none}
+.btn-logout:hover{background:rgba(239,68,68,0.15);color:#FF3B30}
+.main{flex:1;margin-left:240px;display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:var(--white);border-bottom:1.5px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow);position:sticky;top:0;z-index:50}
+.topbar-left{display:flex;align-items:center;gap:12px}
+.sidebar-toggle{display:none;width:36px;height:36px;border-radius:8px;background:var(--bg);border:1.5px solid var(--border);align-items:center;justify-content:center;font-size:18px;color:var(--text)}
+.page-title{font-size:16px;font-weight:900}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.topbar-site-btn{display:flex;align-items:center;gap:6px;background:var(--blue-light);color:var(--blue);border:1.5px solid var(--blue);border-radius:8px;padding:7px 14px;font-size:12px;font-weight:800;cursor:pointer;transition:all .15s;text-decoration:none}
+.topbar-site-btn:hover{background:var(--blue);color:#fff}
+.content{padding:24px;flex:1}
+.stat-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px 20px;box-shadow:var(--shadow);display:flex;align-items:center;gap:14px}
+.stat-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.stat-val{font-size:24px;font-weight:900;line-height:1}
+.stat-lbl{font-size:12px;color:var(--text2);font-weight:600;margin-top:3px}
+.filter-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.filter-tab{padding:8px 16px;border-radius:99px;font-size:13px;font-weight:700;border:1.5px solid var(--border);background:var(--white);color:var(--text2);cursor:pointer;transition:all .15s;font-family:'Nunito',sans-serif}
+.filter-tab:hover{border-color:var(--blue);color:var(--blue)}
+.filter-tab.active{background:var(--blue);border-color:var(--blue);color:#fff}
+.table-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.table-head{display:grid;grid-template-columns:80px 1fr 130px 120px 100px 110px;padding:10px 16px;background:var(--bg);border-bottom:1.5px solid var(--border);font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--text2)}
+.table-row{display:grid;grid-template-columns:80px 1fr 130px 120px 100px 110px;padding:14px 16px;border-bottom:1px solid var(--border);align-items:center;font-size:13px;transition:background .15s}
+.table-row:last-child{border-bottom:none}
+.table-row:hover{background:var(--bg)}
+.status{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:99px;font-size:11px;font-weight:800}
+.status-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.s-new{background:#EFF6FF;color:#006994}.s-new .status-dot{background:#006994}
+.s-progress{background:#FFFBEB;color:#B45309}.s-progress .status-dot{background:#F59E0B}
+.s-done{background:#F0FDF4;color:#166534}.s-done .status-dot{background:#22c55e}
+.s-cancel{background:#FFF0F0;color:#DC2626}.s-cancel .status-dot{background:#FF3B30}
+.action-btns{display:flex;gap:5px;flex-wrap:wrap}
+.btn-action{height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;border:1.5px solid var(--border);background:var(--white);transition:all .15s;padding:0 8px;gap:4px;font-family:'Nunito',sans-serif;font-weight:700}
+.btn-action.view{color:var(--blue)}.btn-action.view:hover{background:var(--blue-light);border-color:var(--blue)}
+.btn-action.progress{color:#B45309;border-color:#F59E0B}.btn-action.progress:hover{background:#FFFBEB}
+.btn-action.done{color:#166534;border-color:#22c55e}.btn-action.done:hover{background:#F0FDF4}
+.btn-action.cancel{color:#DC2626;border-color:#FF3B30}.btn-action.cancel:hover{background:#FFF0F0}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--white);border-radius:16px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg)}
+.modal-head{padding:20px 24px;border-bottom:1.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--white)}
+.modal-title{font-size:17px;font-weight:900}
+.modal-close{width:32px;height:32px;border-radius:50%;background:var(--bg);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer}
+.modal-body{padding:24px}
+.modal-footer{padding:16px 24px;border-top:1.5px solid var(--border);display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;position:sticky;bottom:0;background:var(--white)}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+.info-block label{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--text2);display:block;margin-bottom:3px}
+.info-block div{font-size:14px;font-weight:700;color:var(--text)}
+.articles-list{background:var(--bg);border-radius:8px;padding:14px;margin-bottom:16px}
+.article-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px}
+.article-row:last-child{border-bottom:none}
+.article-name{font-weight:700;flex:1}
+.article-qty{color:var(--text2);margin:0 12px}
+.article-total{font-weight:900;color:var(--blue)}
+.total-row{display:flex;justify-content:space-between;align-items:center;padding-top:12px;margin-top:4px;border-top:2px solid var(--border)}
+.btn-primary{background:var(--blue);color:#fff;border:none;border-radius:8px;padding:10px 16px;font-size:13px;font-weight:800;cursor:pointer;transition:all .15s;font-family:'Nunito',sans-serif;display:inline-flex;align-items:center;gap:6px}
+.btn-primary:hover{background:var(--blue-dark)}
+.btn-secondary{background:var(--bg);color:var(--text2);border:1.5px solid var(--border);border-radius:8px;padding:10px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif}
+.empty-state{text-align:center;padding:60px 20px;color:var(--text2)}
+.empty-state i{font-size:48px;display:block;margin-bottom:12px;opacity:.3}
+.toast-stack{position:fixed;bottom:24px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.tst{background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700;box-shadow:var(--shadow-lg);transform:translateX(120%);transition:transform .35s cubic-bezier(.34,1.56,.64,1);pointer-events:all}
+.tst.show{transform:translateX(0)}
+.tst-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}.sidebar-toggle{display:flex}
+  .table-head,.table-row{grid-template-columns:60px 1fr 100px 90px}
+  .th-date,.td-date,.th-total,.td-total{display:none}
+}
+</style>
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <img src="../assets/images/logo.png" alt="SportKit SN">
+    <div class="sidebar-logo-sub">Panel Admin</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-title">Principal</div>
+    <a class="nav-item" href="dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a class="nav-item" href="produits.html"><i class="bi bi-box-seam-fill"></i> Produits</a>
+    <a class="nav-item active"><i class="bi bi-cart-check-fill"></i> Commandes</a>
+    <div class="nav-section-title">Site</div>
+    <a class="nav-item" href="../index.html" target="_blank"><i class="bi bi-box-arrow-up-right"></i> Voir le site</a>
+  </nav>
+  <div class="sidebar-bottom">
+    <button class="btn-logout" onclick="doLogout()"><i class="bi bi-box-arrow-left"></i> Se déconnecter</button>
+  </div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <button class="sidebar-toggle" id="sidebarToggle"><i class="bi bi-list"></i></button>
+      <div class="page-title">Gestion des commandes</div>
+    </div>
+    <div class="topbar-right">
+      <a href="../index.html" target="_blank" class="topbar-site-btn"><i class="bi bi-eye-fill"></i> Voir le site</a>
+    </div>
+  </div>
+
+  <div class="content">
+    <!-- STATS -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#EFF6FF"><i class="bi bi-cart-fill" style="color:#1D4ED8"></i></div>
+        <div><div class="stat-val" id="st-total">—</div><div class="stat-lbl">Total commandes</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#EFF6FF"><i class="bi bi-bell-fill" style="color:#1D4ED8"></i></div>
+        <div><div class="stat-val" style="color:#1D4ED8" id="st-new">—</div><div class="stat-lbl">Nouvelles</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#FFFBEB"><i class="bi bi-arrow-right-circle-fill" style="color:#B45309"></i></div>
+        <div><div class="stat-val" style="color:#B45309" id="st-prog">—</div><div class="stat-lbl">En cours</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#F0FDF4"><i class="bi bi-check-circle-fill" style="color:#166534"></i></div>
+        <div><div class="stat-val" style="color:#166534" id="st-done">—</div><div class="stat-lbl">Livrées</div></div>
+      </div>
+    </div>
+
+    <!-- FILTRES -->
+    <div class="filter-tabs" id="filterTabs">
+      <button class="filter-tab active" data-filter="">Toutes</button>
+      <button class="filter-tab" data-filter="nouveau">🔵 Nouvelles</button>
+      <button class="filter-tab" data-filter="en_cours">🟡 En cours</button>
+      <button class="filter-tab" data-filter="livre">🟢 Livrées</button>
+      <button class="filter-tab" data-filter="annule">🔴 Annulées</button>
+    </div>
+
+    <!-- SEARCH -->
+    <div style="margin-bottom:16px">
+      <input type="text" id="searchCmd"
+        style="width:100%;max-width:300px;background:var(--white);border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;font-family:'Nunito',sans-serif;font-size:14px;color:var(--text);outline:none"
+        placeholder="🔍 Rechercher un client..." oninput="filterCmd()">
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-card">
+      <div class="table-head">
+        <span>Réf.</span>
+        <span>Client</span>
+        <span class="th-date">Date</span>
+        <span class="th-total">Total</span>
+        <span>Statut</span>
+        <span>Actions</span>
+      </div>
+      <div id="tableBody">
+        <div class="empty-state">
+          <i class="bi bi-arrow-repeat" style="animation:spin 1s linear infinite"></i>
+          Chargement...
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DETAIL COMMANDE -->
+<div class="modal-overlay" id="cmdModal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title" id="cmdModalTitle">Commande #—</div>
+      <button class="modal-close" onclick="closeModal()"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div class="modal-body" id="cmdModalBody"></div>
+    <div class="modal-footer" id="cmdModalFooter"></div>
+  </div>
+</div>
+
+<div class="toast-stack" id="toastStack"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const app = initializeApp({ apiKey:"AIzaSyDQo0JvBPuJlrC4zeynhU1_sb0he5rKtFc", authDomain:"sportkit-sn.firebaseapp.com", projectId:"sportkit-sn", storageBucket:"sportkit-sn.firebasestorage.app", messagingSenderId:"619214960191", appId:"1:619214960191:web:442eda9bfac65fb5c8ea8a" });
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+onAuthStateChanged(auth, user => { if (!user) window.location.href = 'index.html'; });
+window.doLogout = async () => { if(confirm('Se déconnecter ?')) { await signOut(auth); window.location.href = 'index.html'; } };
+document.getElementById('sidebarToggle').onclick = () => document.getElementById('sidebar').classList.toggle('open');
+
+let allCmd = [], activeFilter = '', activeSearch = '';
+
+async function load() {
+  try {
+    const snap = await getDocs(collection(db, 'commandes'));
+    allCmd = snap.docs.map(d => ({ id: d.id, ...d.data() }))
+      .sort((a,b) => new Date(b.createdAt||0) - new Date(a.createdAt||0));
+    updateStats();
+    renderTable();
+  } catch(e) {
+    document.getElementById('tableBody').innerHTML = `<div class="empty-state"><i class="bi bi-wifi-off"></i><div style="font-size:15px;font-weight:800">Impossible de charger</div></div>`;
+  }
+}
+
+function updateStats() {
+  document.getElementById('st-total').textContent = allCmd.length;
+  document.getElementById('st-new').textContent  = allCmd.filter(c=>c.statut==='nouveau').length;
+  document.getElementById('st-prog').textContent = allCmd.filter(c=>c.statut==='en_cours').length;
+  document.getElementById('st-done').textContent = allCmd.filter(c=>c.statut==='livre').length;
+}
+
+function renderTable() {
+  let list = allCmd;
+  if (activeFilter) list = list.filter(c => c.statut === activeFilter);
+  if (activeSearch) list = list.filter(c =>
+    c.nom?.toLowerCase().includes(activeSearch) ||
+    c.phone?.includes(activeSearch) ||
+    c.id.toLowerCase().includes(activeSearch)
+  );
+
+  if (!list.length) {
+    document.getElementById('tableBody').innerHTML = `
+      <div class="empty-state">
+        <i class="bi bi-cart-x"></i>
+        <div style="font-size:15px;font-weight:800;margin-bottom:6px">Aucune commande trouvée</div>
+        <div style="font-size:13px">Les commandes passées sur WhatsApp ou le site apparaîtront ici</div>
+      </div>`;
+    return;
+  }
+
+  document.getElementById('tableBody').innerHTML = list.map(c => {
+    const date = c.createdAt ? new Date(c.createdAt).toLocaleDateString('fr-FR') : '—';
+    const total = c.total ? c.total.toLocaleString() + ' FCFA' : '—';
+    return `
+      <div class="table-row">
+        <div style="font-size:11px;font-weight:900;font-family:monospace;color:var(--text2)">#${c.id.slice(-5).toUpperCase()}</div>
+        <div>
+          <div style="font-weight:700">${c.nom||'Client inconnu'}</div>
+          <div style="font-size:11px;color:var(--text2)">${c.phone||'—'}</div>
+        </div>
+        <div class="td-date" style="font-size:12px;color:var(--text2)">${date}</div>
+        <div class="td-total" style="font-weight:800;color:var(--blue)">${total}</div>
+        <div>${statusBadge(c.statut)}</div>
+        <div class="action-btns">
+          <button class="btn-action view" onclick="viewCmd('${c.id}')"><i class="bi bi-eye-fill"></i></button>
+          <button class="btn-action progress" onclick="updateStatus('${c.id}','en_cours')" title="En cours"><i class="bi bi-arrow-right-circle-fill"></i></button>
+          <button class="btn-action done" onclick="updateStatus('${c.id}','livre')" title="Livré"><i class="bi bi-check-circle-fill"></i></button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// Filtres tabs
+document.querySelectorAll('.filter-tab').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    activeFilter = this.dataset.filter;
+    renderTable();
+  });
+});
+
+window.filterCmd = () => {
+  activeSearch = document.getElementById('searchCmd').value.toLowerCase().trim();
+  renderTable();
+};
+
+window.viewCmd = id => {
+  const c = allCmd.find(x => x.id === id);
+  if (!c) return;
+  const date = c.createdAt ? new Date(c.createdAt).toLocaleString('fr-FR') : '—';
+  document.getElementById('cmdModalTitle').textContent = `Commande #${c.id.slice(-5).toUpperCase()}`;
+  document.getElementById('cmdModalBody').innerHTML = `
+    <div class="info-grid">
+      <div class="info-block"><label>Client</label><div>${c.nom||'—'}</div></div>
+      <div class="info-block"><label>Téléphone</label><div><a href="tel:${c.phone}" style="color:var(--blue)">${c.phone||'—'}</a></div></div>
+      <div class="info-block"><label>Adresse livraison</label><div>${c.adresse||'—'}</div></div>
+      <div class="info-block"><label>Date commande</label><div>${date}</div></div>
+      <div class="info-block"><label>Statut actuel</label><div>${statusBadge(c.statut)}</div></div>
+      <div class="info-block"><label>Paiement</label><div>${c.paiement||'À définir'}</div></div>
+    </div>
+    ${c.articles?.length ? `
+      <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--text2);margin-bottom:10px">Articles commandés</div>
+      <div class="articles-list">
+        ${c.articles.map(a => `
+          <div class="article-row">
+            <span class="article-name">${a.nom}</span>
+            <span class="article-qty">x${a.qty}</span>
+            <span class="article-total">${(a.prix*a.qty).toLocaleString()} FCFA</span>
+          </div>`).join('')}
+        <div class="total-row">
+          <span style="font-size:15px;font-weight:900">Total</span>
+          <span style="font-size:18px;font-weight:900;color:var(--blue)">${(c.total||0).toLocaleString()} FCFA</span>
+        </div>
+      </div>` : `
+      <div style="background:var(--bg);border-radius:8px;padding:14px;text-align:center;color:var(--text2);font-size:13px;margin-bottom:16px">
+        Détail des articles non disponible — commande via WhatsApp
+      </div>`}
+    ${c.notes ? `<div style="background:var(--bg);border-radius:8px;padding:12px;font-size:13px;color:var(--text2)"><strong>Notes :</strong> ${c.notes}</div>` : ''}
+  `;
+  document.getElementById('cmdModalFooter').innerHTML = `
+    <button class="btn-secondary" onclick="closeModal()">Fermer</button>
+    <button class="btn-action progress" style="height:36px;padding:0 12px" onclick="updateStatus('${c.id}','en_cours');closeModal()"><i class="bi bi-arrow-right-circle-fill"></i> En cours</button>
+    <button class="btn-action done" style="height:36px;padding:0 12px" onclick="updateStatus('${c.id}','livre');closeModal()"><i class="bi bi-check-circle-fill"></i> Livré</button>
+    <a href="https://wa.me/${c.phone?.replace(/\D/g,'')}?text=${encodeURIComponent(`Bonjour ${c.nom||''} ! Votre commande SportKit SN est ${c.statut==='livre'?'livrée ✅':'en cours de traitement 🚚'}. Merci de votre confiance !`)}"
+       target="_blank" class="btn-primary" style="background:#25D366">
+      <i class="bi bi-whatsapp"></i> Contacter
+    </a>
+    <button class="btn-action cancel" style="height:36px;padding:0 12px" onclick="updateStatus('${c.id}','annule');closeModal()"><i class="bi bi-x-circle-fill"></i> Annuler</button>
+  `;
+  document.getElementById('cmdModal').classList.add('open');
+};
+
+window.updateStatus = async (id, statut) => {
+  try {
+    await updateDoc(doc(db,'commandes',id), { statut, updatedAt: new Date().toISOString() });
+    const idx = allCmd.findIndex(x=>x.id===id);
+    if (idx > -1) allCmd[idx].statut = statut;
+    updateStats();
+    renderTable();
+    const labels = { nouveau:'Nouveau', en_cours:'En cours', livre:'Livré ✅', annule:'Annulé' };
+    showToast(`Commande → ${labels[statut]||statut}`, statut==='livre'?'#22c55e':statut==='annule'?'#FF3B30':'#F59E0B');
+  } catch(e) { showToast('Erreur : '+e.message, '#FF3B30'); }
+};
+
+window.closeModal = () => document.getElementById('cmdModal').classList.remove('open');
+document.getElementById('cmdModal').addEventListener('click', e => { if(e.target===document.getElementById('cmdModal')) closeModal(); });
+
+function statusBadge(s) {
+  const map = { nouveau:'s-new Nouvelle', en_cours:'s-progress En cours', livre:'s-done Livrée', annule:'s-cancel Annulée' };
+  const [cls, label] = (map[s]||'s-new Nouvelle').split(' ');
+  return `<span class="status ${cls}"><span class="status-dot"></span>${label}</span>`;
+}
+
+function showToast(msg, color='#22c55e') {
+  const s=document.getElementById('toastStack'), t=document.createElement('div');
+  t.className='tst'; t.innerHTML=`<div class="tst-dot" style="background:${color}"></div><span>${msg}</span>`;
+  s.appendChild(t); requestAnimationFrame(()=>t.classList.add('show'));
+  setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),400);},3000);
+}
+
+load();
+</script>
+</body>
+</html>
