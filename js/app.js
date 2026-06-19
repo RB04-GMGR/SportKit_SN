@@ -19,8 +19,7 @@ export const app = initializeApp(firebaseConfig);
 export const db  = getFirestore(app);
 
 // ── Produits ──────────────────────────────
-export async function getProduits() {
-  try {
+export async function getProduits() {  try {
     const snap = await getDocs(collection(db, "produits"));
     return snap.docs.map(d => ({ id: d.id, ...d.data() }));
   } catch(e) { console.error("getProduits:", e); return []; }

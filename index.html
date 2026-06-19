@@ -95,7 +95,7 @@
     <a href="panier.html" class="drawer-link"><i class="bi bi-bag-fill"></i> Mon panier</a>
     <a href="contact.html" class="drawer-link"><i class="bi bi-chat-dots-fill"></i> Contacts</a>
     <div class="drawer-sep"></div>
-    <a href="https://wa.me/221774523213" class="drawer-wa"><i class="bi bi-whatsapp"></i> Commander via WhatsApp</a>
+    <a href="https://wa.me/221780141200" class="drawer-wa"><i class="bi bi-whatsapp"></i> Commander via WhatsApp</a>
   </div>
 </div>
 
@@ -119,7 +119,7 @@
       <div><span class="cart-total-val" id="cartTotal">0</span> <span style="font-size:13px;color:var(--text2)">FCFA</span></div>
     </div>
     <a href="panier.html" class="btn-go-cart"><i class="bi bi-bag-check-fill"></i> Voir mon panier</a>
-    <a href="https://wa.me/221774523213" target="_blank" class="btn-go-wa"><i class="bi bi-whatsapp"></i> Commander via WhatsApp</a>
+    <a href="https://wa.me/221780141200" target="_blank" class="btn-go-wa"><i class="bi bi-whatsapp"></i> Commander via WhatsApp</a>
   </div>
 </div>
 
@@ -267,7 +267,7 @@
       </div>
       <div class="demande-field">
         <label class="demande-label">Votre WhatsApp <span style="color:#ef4444">*</span></label>
-        <input type="tel" id="demandePhone" class="demande-input" placeholder="Ex: 221 77 123 45 67">
+        <input type="tel" id="demandePhone" class="demande-input" placeholder="Ex: 221 77 014 12 00">
       </div>
       <div class="demande-field">
         <label class="demande-label">Décrivez le produit recherché <span style="color:#ef4444">*</span></label>
@@ -365,7 +365,7 @@
       </div>
       <div>
         <div class="footer-col-title">Contacts</div>
-        <div class="footer-contact-item"><i class="bi bi-telephone-fill"></i><span>+221 77 123 45 67</span></div>
+        <div class="footer-contact-item"><i class="bi bi-telephone-fill"></i><span>+221 77 014 12 00</span></div>
         <div class="footer-contact-item"><i class="bi bi-envelope-fill"></i><span>contact@sportkitsn.com</span></div>
         <div class="footer-contact-item"><i class="bi bi-geo-alt-fill"></i><span>Thiès, Sénégal</span></div>
         <div class="footer-contact-item"><i class="bi bi-clock-fill"></i><span>Lun–Ven: 8h–18h · Sam: 9h–16h</span></div>
@@ -378,7 +378,7 @@
   </div>
 </footer>
 
-<a href="https://wa.me/2214523213" target="_blank" class="wa-float"><i class="bi bi-whatsapp"></i></a>
+<a href="https://wa.me/221780141200" target="_blank" class="wa-float"><i class="bi bi-whatsapp"></i></a>
 <div class="toast-stack" id="toastStack"></div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -608,7 +608,7 @@ window.envoyerDemande = async () => {
       photo_1: photos[0] || '', photo_2: photos[1] || ''
     });
     const waMsg = `Bonjour SportKit SN 👋\n\n*Nouvelle demande produit*\n\n👤 Nom : ${nom}\n📱 WhatsApp : ${phone}\n\n📝 Description :\n${texte}${demandeFiles.length ? `\n\n📷 J'ai ${demandeFiles.length} photo(s) à vous envoyer` : ''}`;
-    window.open(`https://wa.me/221774523213?text=${encodeURIComponent(waMsg)}`, '_blank');
+    window.open(`https://wa.me/221780141200?text=${encodeURIComponent(waMsg)}`, '_blank');
     if (demandeFiles.length) showToast('📷 Envoie tes photos sur WhatsApp !', '#006994');
     btn.style.display = 'none';
     document.getElementById('demandeSuccess').style.display = 'block';
